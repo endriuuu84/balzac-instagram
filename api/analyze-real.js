@@ -81,48 +81,37 @@ export default async function handler(req, res) {
 // Apify Integration - Real hashtag data
 async function getApifyHashtagData(mealType) {
     try {
-        // Use the official Instagram Hashtag Scraper
-        const runResponse = await fetch(`https://api.apify.com/v2/acts/reGe1ST3OBgYZSsZJ/runs?token=${APIFY_TOKEN}`, {
+        // Use simpler Instagram Scraper for faster results
+        const searchHashtags = getSearchHashtags(mealType);
+        const mainHashtag = searchHashtags[0]; // Use first hashtag
+        
+        const runResponse = await fetch(`https://api.apify.com/v2/acts/shu8hvrXbJbY3Eb9W/run-sync-get-dataset-items?token=${APIFY_TOKEN}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                hashtags: getSearchHashtags(mealType),
-                resultsLimit: 30,
+                directUrls: [`https://www.instagram.com/explore/tags/${mainHashtag}/`],
+                resultsLimit: 20,
                 resultsType: 'posts',
-                searchLimit: 5,
-                searchType: 'hashtag'
+                addParentData: false
             })
         });
 
         if (!runResponse.ok) {
             const errorText = await runResponse.text();
-            throw new Error(`Apify start failed: ${errorText}`);
+            throw new Error(`Apify request failed: ${errorText}`);
         }
         
-        const run = await runResponse.json();
-        const runId = run.data.id;
+        const results = await runResponse.json();
         
-        // Wait for completion (max 15 seconds)
-        let attempts = 0;
-        while (attempts < 15) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            const statusResponse = await fetch(`https://api.apify.com/v2/acts/reGe1ST3OBgYZSsZJ/runs/${runId}?token=${APIFY_TOKEN}`);
-            const status = await statusResponse.json();
-            
-            if (status.data.status === 'SUCCEEDED') {
-                // Get results
-                const resultsResponse = await fetch(`https://api.apify.com/v2/datasets/${status.data.defaultDatasetId}/items?token=${APIFY_TOKEN}`);
-                const results = await resultsResponse.json();
-                return processApifyData(results, mealType);
-            } else if (status.data.status === 'FAILED') {
-                throw new Error('Apify run failed');
-            }
-            
-            attempts++;
+        if (results && results.length > 0) {
+            const processedData = processApifyData(results, mealType);
+            return {
+                ...processedData,
+                source: 'apify_live'
+            };
         }
         
-        throw new Error('Apify timeout');
+        throw new Error('No data from Apify');
         
     } catch (error) {
         console.log('Apify fallback to default data:', error.message);
