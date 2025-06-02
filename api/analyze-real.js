@@ -88,9 +88,11 @@ async function getApifyHashtagData(mealType) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 directUrls: [`https://www.instagram.com/explore/tags/${mainHashtag}/`],
-                resultsLimit: 20,
+                resultsLimit: 5,  // Reduced for speed
                 resultsType: 'posts',
-                addParentData: false
+                addParentData: false,
+                scrapeComments: false,
+                scrapeLocationData: false
             })
         });
 
