@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balzac Control Dashboard - Sistema di Gestione</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header Control -->
+    <header class="control-header">
+        <div class="header-content">
+            <h1>🎛️ BALZAC CONTROL CENTER</h1>
+            <div class="system-status">
+                <div class="status-indicator" id="systemStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking...</span>
+                </div>
+                <div class="last-update" id="lastUpdate">
+                    Last update: Loading...
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Actions Panel -->
+    <section class="quick-actions">
+        <h2>⚡ AZIONI RAPIDE</h2>
+        <div class="actions-grid">
+            <button class="action-btn test" onclick="testPost('colazione')">
+                <span class="btn-icon">🌅</span>
+                <span class="btn-text">Test Post Colazione</span>
+            </button>
+            <button class="action-btn test" onclick="testPost('pranzo')">
+                <span class="btn-icon">🍝</span>
+                <span class="btn-text">Test Post Pranzo</span>
+            </button>
+            <button class="action-btn test" onclick="testPost('aperitivo')">
+                <span class="btn-icon">🍸</span>
+                <span class="btn-text">Test Post Aperitivo</span>
+            </button>
+            <button class="action-btn emergency" onclick="pauseAutomation()">
+                <span class="btn-icon">⏸️</span>
+                <span class="btn-text">Pausa Automazione</span>
+            </button>
+            <button class="action-btn monitor" onclick="runMonitoring()">
+                <span class="btn-icon">📊</span>
+                <span class="btn-text">Run Monitoring</span>
+            </button>
+            <button class="action-btn settings" onclick="openSettings()">
+                <span class="btn-icon">⚙️</span>
+                <span class="btn-text">Impostazioni</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- System Status Grid -->
+    <section class="system-grid">
+        <h2>🔧 STATO SISTEMI</h2>
+        <div class="status-grid">
+            <!-- Make.com Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>⚡ Make.com</h3>
+                    <div class="status-badge" id="makeStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">Scenario Status:</span>
+                        <span class="value" id="scenarioStatus">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Operations Used:</span>
+                        <span class="value" id="operationsUsed">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Next Run:</span>
+                        <span class="value" id="nextRun">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="checkMakeStatus()">🔄 Refresh</button>
+                        <button onclick="testWebhook()">🧪 Test Webhook</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instagram Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>📱 Instagram</h3>
+                    <div class="status-badge" id="instagramStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">Last Post:</span>
+                        <span class="value" id="lastPost">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Followers:</span>
+                        <span class="value" id="followersCount">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Posts Today:</span>
+                        <span class="value" id="postsToday">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="checkInstagramStatus()">🔄 Refresh</button>
+                        <button onclick="viewInstagramInsights()">📊 Insights</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OpenAI Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>🤖 OpenAI</h3>
+                    <div class="status-badge" id="openaiStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">API Status:</span>
+                        <span class="value" id="openaiApiStatus">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Requests Today:</span>
+                        <span class="value" id="openaiRequests">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Cost This Month:</span>
+                        <span class="value" id="openaiCost">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="testOpenAI()">🧪 Test API</button>
+                        <button onclick="generateSampleContent()">✏️ Generate Sample</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leonardo.ai Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>🎨 Leonardo.ai</h3>
+                    <div class="status-badge" id="leonardoStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">Tokens Left:</span>
+                        <span class="value" id="leonardoTokens">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Images Generated:</span>
+                        <span class="value" id="leonardoImages">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Plan:</span>
+                        <span class="value" id="leonardoPlan">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="testLeonardo()">🧪 Test API</button>
+                        <button onclick="generateSampleImage()">🖼️ Generate Sample</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitoring Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>🔍 Monitoring</h3>
+                    <div class="status-badge" id="monitoringStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">Last Check:</span>
+                        <span class="value" id="lastMonitoringCheck">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Active Alerts:</span>
+                        <span class="value" id="activeAlerts">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Sentiment Score:</span>
+                        <span class="value" id="sentimentScore">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="runMonitoring()">🔄 Run Check</button>
+                        <button onclick="viewMonitoringReport()">📊 View Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cron Jobs Status -->
+            <div class="status-card">
+                <div class="card-header">
+                    <h3>⏰ Cron Jobs</h3>
+                    <div class="status-badge" id="cronStatus">Checking...</div>
+                </div>
+                <div class="card-content">
+                    <div class="stat">
+                        <span class="label">Active Jobs:</span>
+                        <span class="value" id="activeJobs">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Last Execution:</span>
+                        <span class="value" id="lastExecution">Loading...</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Success Rate:</span>
+                        <span class="value" id="successRate">Loading...</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="checkCronJobs()">🔄 Check Jobs</button>
+                        <button onclick="manageCronJobs()">⚙️ Manage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Activity Feed -->
+    <section class="activity-feed">
+        <h2>📊 ATTIVITÀ IN TEMPO REALE</h2>
+        <div class="feed-container">
+            <div class="feed-header">
+                <button class="tab-btn active" onclick="switchTab('all')">Tutti</button>
+                <button class="tab-btn" onclick="switchTab('posts')">Posts</button>
+                <button class="tab-btn" onclick="switchTab('monitoring')">Monitoring</button>
+                <button class="tab-btn" onclick="switchTab('errors')">Errori</button>
+                <button class="clear-btn" onclick="clearActivityFeed()">🗑️ Clear</button>
+            </div>
+            <div class="feed-content" id="activityFeed">
+                <div class="activity-item info">
+                    <span class="timestamp">20:45:32</span>
+                    <span class="type">SYSTEM</span>
+                    <span class="message">Dashboard initialized successfully</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Control Panels -->
+    <section class="control-panels">
+        <!-- Content Management Panel -->
+        <div class="panel">
+            <h3>📝 GESTIONE CONTENUTI</h3>
+            <div class="panel-content">
+                <div class="content-control">
+                    <label for="mealType">Tipo Pasto:</label>
+                    <select id="mealType">
+                        <option value="colazione">Colazione</option>
+                        <option value="pranzo">Pranzo</option>
+                        <option value="aperitivo">Aperitivo</option>
+                    </select>
+                </div>
+                <div class="content-control">
+                    <label for="customCaption">Caption Personalizzata:</label>
+                    <textarea id="customCaption" placeholder="Scrivi una caption custom o lascia vuoto per AI..."></textarea>
+                </div>
+                <div class="content-control">
+                    <label for="customHashtags">Hashtags:</label>
+                    <input type="text" id="customHashtags" placeholder="#balzacmodena #foodie">
+                </div>
+                <div class="panel-actions">
+                    <button onclick="generateContent()">🤖 Genera Contenuto</button>
+                    <button onclick="previewPost()">👁️ Anteprima</button>
+                    <button onclick="schedulePost()">📅 Programma</button>
+                    <button onclick="publishNow()">🚀 Pubblica Ora</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Panel -->
+        <div class="panel">
+            <h3>📊 ANALYTICS REAL-TIME</h3>
+            <div class="panel-content">
+                <div class="analytics-grid">
+                    <div class="metric">
+                        <span class="metric-label">Posts Oggi</span>
+                        <span class="metric-value" id="postsCountToday">0</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Engagement Rate</span>
+                        <span class="metric-value" id="engagementRate">0%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Nuovi Followers</span>
+                        <span class="metric-value" id="newFollowers">+0</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Reach Totale</span>
+                        <span class="metric-value" id="totalReach">0</span>
+                    </div>
+                </div>
+                <canvas id="engagementChart"></canvas>
+                <div class="panel-actions">
+                    <button onclick="refreshAnalytics()">🔄 Refresh</button>
+                    <button onclick="exportReport()">📤 Export Report</button>
+                    <button onclick="viewDetailedAnalytics()">📊 Dettagli</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ Impostazioni Sistema</h3>
+                <button class="close-btn" onclick="closeSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <h4>🕐 Orari Posting</h4>
+                    <div class="time-inputs">
+                        <label>Colazione: <input type="time" id="colazioneTime" value="08:00"></label>
+                        <label>Pranzo: <input type="time" id="pranzoTime" value="13:00"></label>
+                        <label>Aperitivo: <input type="time" id="aperitivoTime" value="18:00"></label>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h4>🔔 Notifiche</h4>
+                    <div class="notification-settings">
+                        <label><input type="checkbox" id="emailNotifications" checked> Email Alerts</label>
+                        <label><input type="checkbox" id="slackNotifications" checked> Slack Notifications</label>
+                        <label><input type="checkbox" id="errorNotifications" checked> Error Notifications</label>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h4>🎨 Contenuti</h4>
+                    <div class="content-settings">
+                        <label>Stile AI: 
+                            <select id="aiStyle">
+                                <option value="friendly">Friendly</option>
+                                <option value="professional">Professional</option>
+                                <option value="casual">Casual</option>
+                            </select>
+                        </label>
+                        <label>Lunghezza Caption: 
+                            <select id="captionLength">
+                                <option value="short">Breve (50 parole)</option>
+                                <option value="medium">Media (100 parole)</option>
+                                <option value="long">Lunga (150 parole)</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveSettings()">💾 Salva</button>
+                <button onclick="resetSettings()">🔄 Reset</button>
+                <button onclick="closeSettings()">❌ Chiudi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Caricamento...</div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

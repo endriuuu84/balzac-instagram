@@ -1,0 +1,151 @@
+{
+  "date": "2025-05-31T17:28:46.181Z",
+  "sources": [
+    {
+      "platform": "Google Reviews",
+      "totalReviews": 127,
+      "recentReviews": 8,
+      "averageRating": 4.3,
+      "totalRatings": 89,
+      "analysis": {
+        "total": 8,
+        "sentimentBreakdown": {
+          "positive": 6,
+          "neutral": 1,
+          "negative": 1
+        },
+        "sentimentPercentage": {
+          "positive": 75,
+          "neutral": 12,
+          "negative": 13
+        },
+        "averageRating": 4.3,
+        "alerts": [
+          {
+            "type": "negative_review",
+            "platform": "google",
+            "text": "Servizio lento, abbiamo aspettato 40 minuti per i primi piatti...",
+            "rating": 2,
+            "author": "Marco R.",
+            "needsResponse": true
+          }
+        ],
+        "opportunities": [
+          {
+            "type": "positive_review",
+            "platform": "google",
+            "text": "Esperienza fantastica! I tortellini erano divini e il servizio impeccabile...",
+            "rating": 5,
+            "author": "Sofia M.",
+            "shareWorthy": true
+          }
+        ]
+      },
+      "needsAttention": true
+    },
+    {
+      "platform": "TripAdvisor",
+      "recentReviews": 0,
+      "analysis": {
+        "total": 0,
+        "sentimentBreakdown": {
+          "positive": 0,
+          "neutral": 0,
+          "negative": 0
+        },
+        "averageRating": 0,
+        "alerts": [],
+        "opportunities": [],
+        "responseNeeded": []
+      },
+      "needsAttention": false
+    },
+    {
+      "platform": "Instagram",
+      "totalMentions": 5,
+      "analysis": {
+        "total": 5,
+        "sentimentBreakdown": {
+          "positive": 4,
+          "neutral": 1,
+          "negative": 0
+        },
+        "sentimentPercentage": {
+          "positive": 80,
+          "neutral": 20,
+          "negative": 0
+        },
+        "totalEngagement": 523,
+        "averageEngagement": 105,
+        "alerts": [],
+        "opportunities": [
+          {
+            "type": "viral_positive_mention",
+            "platform": "instagram",
+            "text": "Che posto incredibile! I tortellini di Balzac sono i migliori di Modena...",
+            "engagement": 234,
+            "url": "https://instagram.com/p/example"
+          }
+        ]
+      },
+      "needsAttention": false
+    },
+    {
+      "platform": "Facebook",
+      "averageRating": 4.4,
+      "totalRatings": 67,
+      "recentReviews": 4,
+      "analysis": {
+        "total": 4,
+        "sentimentBreakdown": {
+          "positive": 3,
+          "neutral": 1,
+          "negative": 0
+        },
+        "sentimentPercentage": {
+          "positive": 75,
+          "neutral": 25,
+          "negative": 0
+        },
+        "averageRating": 4.4,
+        "alerts": [],
+        "opportunities": []
+      },
+      "needsAttention": false
+    }
+  ],
+  "alerts": [
+    {
+      "type": "negative_review",
+      "platform": "google",
+      "text": "Servizio lento, abbiamo aspettato 40 minuti per i primi piatti...",
+      "rating": 2,
+      "author": "Marco R.",
+      "needsResponse": true
+    }
+  ],
+  "opportunities": [
+    {
+      "type": "positive_review",
+      "platform": "google",
+      "text": "Esperienza fantastica! I tortellini erano divini e il servizio impeccabile...",
+      "rating": 5,
+      "author": "Sofia M.",
+      "shareWorthy": true
+    },
+    {
+      "type": "viral_positive_mention",
+      "platform": "instagram",
+      "text": "Che posto incredibile! I tortellini di Balzac sono i migliori di Modena...",
+      "engagement": 234,
+      "url": "https://instagram.com/p/example"
+    }
+  ],
+  "actionItems": [
+    "Respond to 1 negative review(s) within 1 hour",
+    "Share 2 positive review(s) on Instagram stories",
+    "Review Google My Business listing and address common complaints",
+    "Monitor social media for new mentions every 4 hours",
+    "Thank all positive reviewers personally"
+  ]
+}

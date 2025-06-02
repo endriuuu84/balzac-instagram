@@ -1,0 +1,10 @@
+[
+  {
+    "type": "test_alert",
+    "platform": "system",
+    "text": "System test alert",
+    "timestamp": "2025-05-31T17:28:44.829Z",
+    "processedAt": "2025-05-31T17:28:44.829Z",
+    "loggedAt": "2025-05-31T17:28:44.829Z"
+  }
+]

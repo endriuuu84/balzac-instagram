@@ -1,0 +1,51 @@
+{
+  "period": {
+    "start": "24/05/2025",
+    "end": "31/05/2025"
+  },
+  "summary": {
+    "postsPublished": 0,
+    "totalReach": 0,
+    "totalImpressions": 0,
+    "profileViews": 0,
+    "websiteClicks": 0,
+    "followerCount": 0,
+    "avgEngagementRate": "0%"
+  },
+  "bestPostingTimes": {
+    "breakfast": "8:15",
+    "lunch": "12:30",
+    "aperitivo": "18:45"
+  },
+  "topPosts": [],
+  "mealTypePerformance": {
+    "breakfast": {
+      "count": 0,
+      "avgEngagement": "0%",
+      "totalReach": 0,
+      "totalSaves": 0
+    },
+    "lunch": {
+      "count": 0,
+      "avgEngagement": "0%",
+      "totalReach": 0,
+      "totalSaves": 0
+    },
+    "aperitivo": {
+      "count": 0,
+      "avgEngagement": "0%",
+      "totalReach": 0,
+      "totalSaves": 0
+    }
+  },
+  "businessMetrics": {
+    "directionsClicks": 0,
+    "phoneClicks": 0,
+    "emailClicks": 0
+  },
+  "recommendations": [
+    "Focus on breakfast content - highest engagement at 0%",
+    "Increase posting frequency to maintain visibility",
+    "Test posting 15 minutes earlier for lunch content based on engagement patterns"
+  ]
+}

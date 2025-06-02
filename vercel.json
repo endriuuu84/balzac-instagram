@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/config",
+      "dest": "/dashboard-control/config-dashboard.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dashboard-control/$1"
+    }
+  ],
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    }
+  },
+  "framework": null
+}

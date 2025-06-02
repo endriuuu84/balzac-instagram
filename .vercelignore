@@ -1,0 +1,6 @@
+.env
+node_modules
+.DS_Store
+automation-scripts/node_modules
+monitoring-system/node_modules
+*.log

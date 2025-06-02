@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balzac Instagram Token Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b35;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ff6b35;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        .button:hover {
+            background: #e55a2b;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .token-box {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Balzac Instagram Token Generator</h1>
+        
+        <div class="step">
+            <h2>Step 1: Genera URL di autorizzazione</h2>
+            <p>Clicca il pulsante per aprire la pagina di autorizzazione Instagram:</p>
+            <a href="#" id="authLink" class="button" target="_blank">Autorizza Balzac App</a>
+        </div>
+
+        <div class="step">
+            <h2>Step 2: Autorizza l'app</h2>
+            <p>1. Effettua login con l'account Instagram del Balzac</p>
+            <p>2. Clicca "Autorizza" quando richiesto</p>
+            <p>3. Verrai reindirizzato a una pagina con l'URL tipo:</p>
+            <code>https://localhost:3000/auth/callback?code=AQD...</code>
+        </div>
+
+        <div class="step">
+            <h2>Step 3: Incolla l'URL completo qui</h2>
+            <textarea id="redirectUrl" rows="3" placeholder="Incolla qui l'URL completo dopo l'autorizzazione"></textarea>
+            <button onclick="extractToken()" class="button">Estrai Token</button>
+        </div>
+
+        <div id="tokenResult" style="display:none;">
+            <div class="token-box">
+                <h3>✅ Token estratto!</h3>
+                <p><strong>Short-lived token:</strong></p>
+                <textarea id="shortToken" rows="2" readonly></textarea>
+                <button onclick="convertToLongLived()" class="button">Converti in Long-Lived Token</button>
+            </div>
+        </div>
+
+        <div id="longTokenResult" style="display:none;">
+            <div class="token-box">
+                <h3>✅ Long-Lived Token generato!</h3>
+                <p>Valido per 60 giorni. Copia e incolla nel file .env:</p>
+                <textarea id="envConfig" rows="8" readonly></textarea>
+                <button onclick="copyToClipboard()" class="button">📋 Copia configurazione</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const APP_ID = '690017453674670';
+        const APP_SECRET = 'dfedcc19f2157e3c5047dba4d570441f';
+        const REDIRECT_URI = 'https://localhost:3000/auth/callback';
+        
+        // Generate authorization URL
+        const authUrl = `https://api.instagram.com/oauth/authorize?client_id=${APP_ID}&redirect_uri=${REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
+        document.getElementById('authLink').href = authUrl;
+        
+        function extractToken() {
+            const url = document.getElementById('redirectUrl').value;
+            const urlParams = new URLSearchParams(new URL(url).search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                document.getElementById('shortToken').value = code;
+                document.getElementById('tokenResult').style.display = 'block';
+                console.log('Code extracted:', code);
+            } else {
+                alert('URL non valido. Assicurati di copiare l\'URL completo dopo l\'autorizzazione.');
+            }
+        }
+        
+        async function convertToLongLived() {
+            const code = document.getElementById('shortToken').value;
+            
+            // Note: This needs to be done server-side for security
+            // This is just for demonstration
+            
+            const envConfig = `# Instagram Configuration
+INSTAGRAM_APP_ID=${APP_ID}
+INSTAGRAM_APP_SECRET=${APP_SECRET}
+INSTAGRAM_AUTH_CODE=${code}
+
+# Next steps:
+# 1. Exchange this code for access token using server-side script
+# 2. Get Instagram Business Account ID
+# 3. Get Facebook Page Access Token`;
+            
+            document.getElementById('envConfig').value = envConfig;
+            document.getElementById('longTokenResult').style.display = 'block';
+            
+            alert('IMPORTANTE: Il code deve essere scambiato server-side per sicurezza. Usa lo script Node.js fornito.');
+        }
+        
+        function copyToClipboard() {
+            const textarea = document.getElementById('envConfig');
+            textarea.select();
+            document.execCommand('copy');
+            alert('✅ Configurazione copiata negli appunti!');
+        }
+    </script>
+</body>
+</html>

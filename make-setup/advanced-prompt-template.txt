@@ -1,0 +1,86 @@
+# PROMPT AVANZATO PER OPENAI IN MAKE.COM
+
+## System Message:
+Sei un esperto social media manager e food blogger per ristoranti di lusso italiani. 
+Crei contenuti Instagram che generano alto engagement, usando strategie di marketing 
+avanzate e ottimizzazione hashtag. Conosci perfettamente la cultura gastronomica 
+di Modena e dell'Emilia-Romagna.
+
+## User Message Template:
+Crea un post Instagram professionale per Balzac Bistrot Modena.
+
+CONTESTO:
+- Tipo pasto: {{1.meal_type}}
+- Giorno: {{formatDate(now; "dddd")}}
+- Ora: {{1.time}}
+- Stagione: {{formatDate(now; "MMMM")}}
+- Weekend: {{if(formatDate(now; "E") >= 6; "true"; "false")}}
+
+ANALISI HASHTAG E TIMING:
+Basandoti su questi dati di engagement:
+- Orari migliori: 07:30 (colazione), 12:30 (pranzo), 19:00 (aperitivo)
+- Sabato/Domenica: +30% engagement
+- Hashtag locali performano meglio di quelli generici
+
+ISTRUZIONI PER LA CAPTION:
+1. Scegli UN piatto specifico e stagionale per {{1.meal_type}}:
+   - Colazione: cornetto caldo, cappuccino cremoso, brioche artigianale
+   - Pranzo: tortellini in brodo, tagliatelle al ragù, lasagne verdi
+   - Aperitivo: Spritz Campari, tagliere gourmet, cocktail signature
+
+2. Scrivi una caption (max 125 parole) che includa:
+   - Hook iniziale che catturi attenzione (domanda o affermazione bold)
+   - Descrizione sensoriale del piatto (profumi, sapori, texture)
+   - Storia o curiosità locale (tradizione modenese)
+   - Emoji strategiche (max 4-5, ben distribuite)
+   - Call-to-action chiara (prenota, tagga, condividi)
+
+3. HASHTAG STRATEGY (genera esattamente 25 hashtag):
+   MIX OTTIMALE:
+   - 5 hashtag molto popolari (>500k post): #foodporn #italianfood etc
+   - 8 hashtag medi (50-500k): #modenatoday #cucinaemiliana etc  
+   - 7 hashtag di nicchia (<50k): #balzacmodena #modenafoodie etc
+   - 3 hashtag branded: #balzacbistrot #balzacmodena #balzacexperience
+   - 2 hashtag stagionali/trending del momento
+
+   IMPORTANTE: Varia gli hashtag, non usare sempre gli stessi!
+
+4. DESCRIZIONE IMMAGINE per Leonardo AI (dopo gli hashtag):
+   Scrivi una descrizione dettagliata per generare una foto professionale:
+   - Stile: "professional food photography, restaurant style, natural lighting"
+   - Composizione: primo piano, profondità di campo, dettagli nitidi
+   - Ambientazione: tavolo elegante, tovaglia bianca, posate argento
+   - Mood: caldo, invitante, lussuoso ma accogliente
+   - Dettagli specifici del piatto scelto
+
+ESEMPIO OUTPUT:
+---
+[CAPTION]
+Hai mai assaggiato il paradiso in una tazza? ☕✨
+
+Questa mattina al Balzac, il nostro cappuccino è una carezza per l'anima. 
+Cremoso, vellutato, con quella schiuma perfetta che solo un vero barista 
+modenese sa creare. Accompagnato da un cornetto ancora caldo, ripieno 
+di marmellata di albicocche dei nostri colli.
+
+L'arte del buongiorno si chiama tradizione. 🥐❤️
+
+👉 Prenota il tuo tavolo: link in bio
+📍 Via San Giorgio 12, Modena
+
+[HASHTAGS]
+#cappuccino #breakfast #italianfood #modena #foodporn #coffeelover 
+#modenafood #colazione #cornetto #buongiorno #instafood #coffeeaddict 
+#modenacity #emiliaromagna #wheretoeat #italianbreakfast #barista 
+#balzacmodena #balzacbistrot #modenafoodie #colazionetime #modenatoday 
+#foodstagram #morningvibes #balzacexperience
+
+[IMMAGINE PER LEONARDO]
+Professional food photography: Close-up of a perfect Italian cappuccino in 
+elegant white porcelain cup with golden rim, thick microfoam art on top 
+showing a leaf pattern. Next to it, a fresh golden cornetto (Italian croissant) 
+cut in half showing apricot jam filling, on fine china plate. Natural morning 
+light from left, shallow depth of field, warm tones. Restaurant setting with 
+white tablecloth, silver spoon, out of focus flowers in background. 
+Style: high-end food magazine photography, inviting and luxurious.
+---

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balzac Bistrot - Instagram Automation Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>🚀 BALZAC BISTROT</h1>
+                <p class="subtitle">Instagram Automation Stack Dashboard</p>
+            </div>
+            <div class="roi-summary">
+                <div class="roi-card">
+                    <span class="label">ROI Mensile</span>
+                    <span class="value">894%</span>
+                </div>
+                <div class="roi-card">
+                    <span class="label">Net Profit</span>
+                    <span class="value">€2,833/mese</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-container">
+        <!-- Stack Overview Section -->
+        <section class="stack-overview">
+            <h2>💰 INVESTIMENTO TOTALE: €317/mese</h2>
+            <div class="stack-grid">
+                <div class="stack-card free">
+                    <div class="card-header">
+                        <h3>Instagram Graph API</h3>
+                        <span class="price">GRATUITO ✅</span>
+                    </div>
+                    <ul class="features">
+                        <li>Pubblicazione automatica post</li>
+                        <li>Analytics real-time</li>
+                        <li>Gestione stories</li>
+                        <li>Insights audience</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>GPT-4 + DALL-E 3</h3>
+                        <span class="price">€150/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Caption AI-generated</li>
+                        <li>Immagini food photography</li>
+                        <li>Hashtag optimization</li>
+                        <li>Content strategy</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>Leonardo.ai</h3>
+                        <span class="price">€24/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Visual content premium</li>
+                        <li>Food styling AI</li>
+                        <li>Brand consistency</li>
+                        <li>Unlimited generations</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>Hootsuite Analytics</h3>
+                        <span class="price">€49/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Performance tracking</li>
+                        <li>Best times analysis</li>
+                        <li>Competitor insights</li>
+                        <li>Report automation</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>Apify Scraper</h3>
+                        <span class="price">€49/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Hashtag trends</li>
+                        <li>Competitor monitoring</li>
+                        <li>Local food trends</li>
+                        <li>Market intelligence</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>Brand24 Monitoring</h3>
+                        <span class="price">€59/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Mention tracking</li>
+                        <li>Sentiment analysis</li>
+                        <li>Review alerts</li>
+                        <li>Crisis management</li>
+                    </ul>
+                </div>
+
+                <div class="stack-card">
+                    <div class="card-header">
+                        <h3>Make Automation</h3>
+                        <span class="price">€16/mese</span>
+                    </div>
+                    <ul class="features">
+                        <li>Workflow automation</li>
+                        <li>API integration</li>
+                        <li>Schedule posting</li>
+                        <li>Process optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI Visualization -->
+        <section class="roi-section">
+            <h2>📊 ROI ANALYSIS</h2>
+            <div class="roi-grid">
+                <div class="roi-chart-container">
+                    <canvas id="roiChart"></canvas>
+                </div>
+                <div class="roi-metrics">
+                    <div class="metric-card">
+                        <h4>🕐 Time Savings</h4>
+                        <p class="metric-value">20 ore/settimana</p>
+                        <p class="metric-detail">Valore: €1,500/mese</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>🍽️ Revenue Extra</h4>
+                        <p class="metric-value">+50 tavoli/mese</p>
+                        <p class="metric-detail">€1,650/mese aggiuntivi</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>📈 Growth Rate</h4>
+                        <p class="metric-value">+300% reach</p>
+                        <p class="metric-detail">200-400 followers/mese</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>💝 Engagement</h4>
+                        <p class="metric-value">6-8%</p>
+                        <p class="metric-detail">vs 2-3% attuale</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Automation Timeline -->
+        <section class="automation-timeline">
+            <h2>🤖 AUTOMAZIONE GIORNALIERA</h2>
+            <div class="timeline-container">
+                <div class="timeline-item breakfast">
+                    <div class="time">07:30</div>
+                    <div class="content">
+                        <h4>🌅 COLAZIONE</h4>
+                        <p>GPT-4 genera caption "Buongiorno Modena!"</p>
+                        <p>Leonardo.ai crea visual cappuccino + cornetti</p>
+                        <p>Pubblicazione automatica alle 8:15</p>
+                        <span class="result">Zero effort, massimo engagement</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item lunch">
+                    <div class="time">12:00</div>
+                    <div class="content">
+                        <h4>🍝 PRANZO</h4>
+                        <p>Caption tortellini tradizione modenese</p>
+                        <p>Visual tortellini in brodo fumante</p>
+                        <p>Auto-hashtag: #TortelliniModena</p>
+                        <span class="result">+45% engagement vs manuale</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item aperitivo">
+                    <div class="time">18:00</div>
+                    <div class="content">
+                        <h4>🍷 APERITIVO</h4>
+                        <p>Spritz + Lambrusco content creation</p>
+                        <p>Setup aperitivo Piazza Grande visual</p>
+                        <p>Trend detection: #AperitivoModena</p>
+                        <span class="result">95% engagement rate target</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item analytics">
+                    <div class="time">20:00</div>
+                    <div class="content">
+                        <h4>📊 ANALYTICS</h4>
+                        <p>Daily performance summary</p>
+                        <p>Sentiment analysis report</p>
+                        <p>Tomorrow content planning</p>
+                        <span class="result">Data-driven decisions auto</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Preview -->
+        <section class="results-preview">
+            <h2>🎯 RISULTATI ATTESI</h2>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="icon">📈</div>
+                    <h3>Crescita Social</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Followers</span>
+                            <span class="stat-value">+200-400/mese</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Engagement</span>
+                            <span class="stat-value">6-8%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Reach</span>
+                            <span class="stat-value">+300%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="icon">💰</div>
+                    <h3>Business Impact</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Prenotazioni</span>
+                            <span class="stat-value">+30-50/mese</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Revenue</span>
+                            <span class="stat-value">€1,650/mese</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">ROI</span>
+                            <span class="stat-value">894%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="icon">🏆</div>
+                    <h3>Market Position</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Ranking</span>
+                            <span class="stat-value">Top 3 Modena</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">AI Advantage</span>
+                            <span class="stat-value">First Mover</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Brand Value</span>
+                            <span class="stat-value">Premium</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Timeline -->
+        <section class="implementation">
+            <h2>⏰ TIMELINE IMPLEMENTAZIONE</h2>
+            <div class="implementation-grid">
+                <div class="phase-card active">
+                    <h3>SETTIMANA 1</h3>
+                    <p>Setup Instagram API + OpenAI</p>
+                    <p class="impact">Primi post automatici live</p>
+                </div>
+                <div class="phase-card">
+                    <h3>SETTIMANA 2</h3>
+                    <p>Add Leonardo.ai + Hootsuite</p>
+                    <p class="impact">+50% engagement rate</p>
+                </div>
+                <div class="phase-card">
+                    <h3>SETTIMANA 3</h3>
+                    <p>Full automation complete</p>
+                    <p class="impact">Intelligence competitiva</p>
+                </div>
+                <div class="phase-card">
+                    <h3>MESE 2-3</h3>
+                    <p>Optimization + Scale</p>
+                    <p class="impact">#1 Bistrot Instagram Modena</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>🚀 DIVENTA IL BISTROT TECH-LEADER DI MODENA</h2>
+                <div class="cta-stats">
+                    <div class="cta-stat">
+                        <span class="big-number">€317</span>
+                        <span class="desc">Investimento mensile</span>
+                    </div>
+                    <div class="cta-arrow">→</div>
+                    <div class="cta-stat">
+                        <span class="big-number">€3,150</span>
+                        <span class="desc">Valore generato/mese</span>
+                    </div>
+                </div>
+                <p class="cta-message">Break-even in 1 settimana • ROI 894% • First-mover advantage</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

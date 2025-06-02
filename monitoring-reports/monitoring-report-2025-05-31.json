@@ -1,0 +1,100 @@
+{
+  "competitors": {
+    "timestamp": "2025-05-31T17:01:56.072Z",
+    "byCompetitor": {
+      "undefined": {
+        "posts": 1,
+        "totalEngagement": 0,
+        "avgEngagement": 0,
+        "topPost": {
+          "engagement": 0
+        }
+      },
+      "osteriafrancescana": {
+        "posts": 5,
+        "totalEngagement": 628,
+        "avgEngagement": 126,
+        "topPost": {
+          "engagement": 208,
+          "caption": "",
+          "type": "Image"
+        }
+      },
+      "franceschetta58": {
+        "posts": 5,
+        "totalEngagement": 389,
+        "avgEngagement": 78,
+        "topPost": {
+          "engagement": 129,
+          "caption": "Vuoi che la tua occasione speciale risuoni con la ",
+          "type": "Video"
+        }
+      },
+      "mercatoalbinelli": {
+        "posts": 5,
+        "totalEngagement": 578,
+        "avgEngagement": 116,
+        "topPost": {
+          "engagement": 156,
+          "caption": "A Modena la spesa dove la fai? 👍 Al Mercato coper",
+          "type": "Video"
+        }
+      }
+    },
+    "insights": [
+      "osteriafrancescana leads with 126 avg engagement"
+    ],
+    "opportunities": [
+      "Low competition at 20:00"
+    ]
+  },
+  "hashtags": {
+    "timestamp": "2025-05-31T17:01:57.729Z",
+    "byHashtag": {
+      "modenafood": {
+        "posts": 19,
+        "avgEngagement": 23,
+        "topEngagement": 104
+      },
+      "ristorantimodena": {
+        "posts": 11,
+        "avgEngagement": 11,
+        "topEngagement": 24
+      },
+      "aperitivomodena": {
+        "posts": 10,
+        "avgEngagement": 9,
+        "topEngagement": 27
+      },
+      "cucinamodenese": {
+        "posts": 10,
+        "avgEngagement": 20,
+        "topEngagement": 92
+      }
+    },
+    "trending": [
+      {
+        "hashtag": "#modenafood",
+        "avgEngagement": 23
+      },
+      {
+        "hashtag": "#cucinamodenese",
+        "avgEngagement": 20
+      },
+      {
+        "hashtag": "#ristorantimodena",
+        "avgEngagement": 11
+      }
+    ],
+    "recommendations": [
+      "Use #modenafood for maximum reach",
+      "Include #aperitivomodena for evening visibility"
+    ]
+  },
+  "actions": [
+    "Post at 20:00 today",
+    "Use #modenafood in today's posts",
+    "Create video content - trending format",
+    "Respond to all comments within 2 hours"
+  ]
+}

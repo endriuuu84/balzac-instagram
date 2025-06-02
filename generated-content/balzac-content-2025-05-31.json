@@ -1,0 +1,20 @@
+{
+  "breakfast": {
+    "dish": "Uova Benedict",
+    "caption": "Inizia la giornata con stile italiano moderno 🍳✨ Le nostre Uova Benedict sono la colazione perfetta a #BalzacBistrot #ModenaBreakfast #GustoEmiliano",
+    "imagePrompt": "Professional food photography of Uova Benedict, \ncozy Italian bistrot breakfast, \nsoft morning light, warm tones, \nelegant table setting, fresh flowers,\nshot from 45-degree angle,\nshallow depth of field,\nInstagram square format 1:1,\nultra realistic, appetizing,\nBalzac Bistrot Modena ambiance,\nhigh-end restaurant photography style",
+    "postTime": "08:15"
+  },
+  "lunch": {
+    "dish": "Risotto Balsamico",
+    "caption": "Delizia emiliana in ogni boccone: il nostro Risotto Balsamico è l'incarnazione dell'eleganza culinaria moderna. Ingredienti locali, tradizione e qualità si fondono in armonia. 🍚🍷 #BalzacBistrot #ModenaFood #RisottoBalsamico #CucinaEmiliana #EleganzaModerna",
+    "imagePrompt": "Professional food photography of Risotto Balsamico, \ntraditional Italian lunch presentation, \nbright natural daylight, vibrant colors, \nrustic table, traditional ceramics,\nshot from 45-degree angle,\nshallow depth of field,\nInstagram square format 1:1,\nultra realistic, appetizing,\nBalzac Bistrot Modena ambiance,\nhigh-end restaurant photography style",
+    "postTime": "12:30"
+  },
+  "aperitivo": {
+    "dish": "Spritz Balzac",
+    "caption": "Scintillante aperitivo all'italiana al Balzac Bistrot Modena. Il nostro Spritz Balzac sprigiona l'eleganza di Piazza Grande. 🍹✨ Un'esperienza da condividere con amici in un ambiente raffinato. #BalzacAperitivo #PiazzaGrandeVibes #SpritzTime #ModenaNight #ConvivialitàElegante",
+    "imagePrompt": "Professional food photography of Spritz Balzac, \nsophisticated Italian aperitivo setup, \ngolden hour lighting, warm ambiance, \nelegant glasses, Modena cityscape background,\nshot from 45-degree angle,\nshallow depth of field,\nInstagram square format 1:1,\nultra realistic, appetizing,\nBalzac Bistrot Modena ambiance,\nhigh-end restaurant photography style",
+    "postTime": "18:45"
+  }
+}
