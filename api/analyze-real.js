@@ -10,7 +10,7 @@ const APIFY_TOKEN = process.env.APIFY_API_TOKEN;
 const INSTAGRAM_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
 const INSTAGRAM_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID;
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -530,3 +530,7 @@ function getRandomCompetitor() {
     
     return competitors[Math.floor(Math.random() * competitors.length)];
 }
+
+// Export for both Vercel and Express
+module.exports = { default: handler };
+export default handler;

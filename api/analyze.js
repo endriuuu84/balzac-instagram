@@ -4,8 +4,8 @@ import path from 'path';
 // Load menu data
 const menuData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'menu.json'), 'utf8'));
 
-// Vercel Serverless Function per analisi dati
-export default async function handler(req, res) {
+// Serverless Function per analisi dati
+async function handler(req, res) {
     // Abilita CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -377,3 +377,7 @@ function getRandomItems(array, count) {
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
 }
+
+// Export for both Vercel and Express
+module.exports = { default: handler };
+export default handler;
