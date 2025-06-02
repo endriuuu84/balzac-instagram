@@ -1,36 +1,8 @@
-# Environment variables
+node_modules/
 .env
 .env.local
-.env.production
-
-# API Keys
-*.key
-*.pem
-config/secrets.js
-
-# Dependencies
-node_modules/
-
-# Logs
-logs/
-*.log
-
-# OS files
 .DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-
-# Build output
+*.log
+.vercel
 dist/
 build/
-
-# Test coverage
-coverage/
-
-# Temporary files
-temp/
-tmp/
-.vercel
