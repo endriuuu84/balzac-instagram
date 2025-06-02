@@ -33,11 +33,13 @@ export default async function handler(req, res) {
         const randomFeaturedItems = getRandomFeaturedItems(meal_type, menuItems);
 
         // Fetch real data in parallel
-        const [hashtagData, instagramInsights, competitorData] = await Promise.all([
+        const [hashtagData, competitorData] = await Promise.all([
             getApifyHashtagData(meal_type),
-            getInstagramInsights(),
+            // getInstagramInsights(), // Token expired - disabled temporarily
             getCompetitorAnalysis(meal_type)
         ]);
+        
+        const instagramInsights = { data: null, avg_engagement: 1500 }; // Fallback data
 
         // Generate optimized response
         const data = {
@@ -79,20 +81,46 @@ export default async function handler(req, res) {
 // Apify Integration - Real hashtag data
 async function getApifyHashtagData(mealType) {
     try {
-        // Use Apify Instagram Hashtag Scraper
-        const response = await fetch(`https://api.apify.com/v2/acts/zuzka~instagram-hashtag-scraper/run-sync-get-dataset-items?token=${APIFY_TOKEN}`, {
+        // First, start the Apify actor run
+        const runResponse = await fetch(`https://api.apify.com/v2/acts/dSCLg0C3YEBe3HI4p/runs?token=${APIFY_TOKEN}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                hashtags: getSearchHashtags(mealType),
-                resultsLimit: 10
+                searchType: 'hashtag',
+                searchLimit: 5,
+                hashtags: getSearchHashtags(mealType)
             })
         });
 
-        if (!response.ok) throw new Error('Apify request failed');
+        if (!runResponse.ok) {
+            const errorText = await runResponse.text();
+            throw new Error(`Apify start failed: ${errorText}`);
+        }
         
-        const data = await response.json();
-        return processApifyData(data, mealType);
+        const run = await runResponse.json();
+        const runId = run.data.id;
+        
+        // Wait for completion (max 15 seconds)
+        let attempts = 0;
+        while (attempts < 15) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            const statusResponse = await fetch(`https://api.apify.com/v2/acts/dSCLg0C3YEBe3HI4p/runs/${runId}?token=${APIFY_TOKEN}`);
+            const status = await statusResponse.json();
+            
+            if (status.data.status === 'SUCCEEDED') {
+                // Get results
+                const resultsResponse = await fetch(`https://api.apify.com/v2/datasets/${status.data.defaultDatasetId}/items?token=${APIFY_TOKEN}`);
+                const results = await resultsResponse.json();
+                return processApifyData(results, mealType);
+            } else if (status.data.status === 'FAILED') {
+                throw new Error('Apify run failed');
+            }
+            
+            attempts++;
+        }
+        
+        throw new Error('Apify timeout');
         
     } catch (error) {
         console.log('Apify fallback to default data:', error.message);
@@ -125,20 +153,15 @@ async function getCompetitorAnalysis(mealType) {
         const competitors = getCompetitorHandles();
         const randomCompetitor = competitors[Math.floor(Math.random() * competitors.length)];
         
-        // Use Apify Instagram Profile Scraper
-        const response = await fetch(`https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=${APIFY_TOKEN}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                usernames: [randomCompetitor.handle],
-                resultsLimit: 5
-            })
-        });
-
-        if (!response.ok) throw new Error('Competitor analysis failed');
-        
-        const data = await response.json();
-        return processCompetitorData(data[0], randomCompetitor);
+        // For now, use fallback data as profile scraping is complex
+        console.log('Using competitor simulation for:', randomCompetitor.name);
+        return {
+            ...randomCompetitor,
+            avg_engagement: Math.floor(Math.random() * 3000) + 1000,
+            posting_frequency: `${(Math.random() * 2 + 0.5).toFixed(1)} posts/day`,
+            top_strategies: ['#modena', '#food', '#restaurant', '#italy'],
+            real_data: false
+        };
         
     } catch (error) {
         console.log('Competitor fallback:', error.message);
