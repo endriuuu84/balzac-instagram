@@ -1,3 +1,9 @@
+import fs from 'fs';
+import path from 'path';
+
+// Load menu data
+const menuData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'menu.json'), 'utf8'));
+
 // Vercel Serverless Function per analisi dati
 export default async function handler(req, res) {
     // Abilita CORS
@@ -18,13 +24,17 @@ export default async function handler(req, res) {
         
         console.log(`📊 Analisi per: ${meal_type}`);
 
+        // Get menu items for this meal type
+        const menuItems = getMenuItems(meal_type);
+
         // Genera dati ottimizzati per il tipo di pasto
         const data = {
             timestamp: new Date().toISOString(),
             meal_type: meal_type,
+            menu_items: menuItems,
             hashtags: getOptimizedHashtags(meal_type),
             optimal_time: getOptimalTime(meal_type),
-            content_suggestions: getContentSuggestions(meal_type),
+            content_suggestions: getContentSuggestions(meal_type, menuItems),
             performance_metrics: {
                 expected_reach: 'High (5k-10k)',
                 best_performing_hashtags: getBestHashtags(meal_type),
@@ -36,12 +46,8 @@ export default async function handler(req, res) {
                 day_type: getDayType(),
                 weather_mood: getWeatherMood(),
                 local_events: getLocalEvents(),
-                competitor_insights: {
-                    name: 'Osteria Francescana',
-                    avg_engagement: 5200,
-                    posting_frequency: '2.1 posts/day',
-                    top_strategies: ['#modena', '#michelinguide', '#finedining']
-                }
+                featured_items: getFeaturedItems(meal_type, menuItems),
+                competitor_insights: getCompetitorInsights()
             }
         };
 
@@ -101,22 +107,22 @@ function getOptimalTime(mealType) {
     return times[mealType];
 }
 
-function getContentSuggestions(mealType) {
+function getContentSuggestions(mealType, menuItems) {
     const suggestions = {
         colazione: [
-            'Mostra il processo di preparazione del cappuccino',
-            'Foto con luce naturale del mattino',
-            'Includi cornetti freschi appena sfornati'
+            'Mostra croissants francesi e pain au chocolat appena sfornati',
+            'Cappuccino con latte art in primo piano',
+            'Atmosfera accogliente di bistrot francese al mattino'
         ],
         pranzo: [
-            'Primi piani dei tortellini fatti a mano',
-            'Racconta la tradizione modenese',
-            'Mostra la preparazione dello chef'
+            'Tortellini fatti a mano in crema di parmigiano 24 mesi',
+            'Steak tartare con condimenti tradizionali',
+            'Atmosfera elegante del bistrot a pranzo'
         ],
         aperitivo: [
-            'Atmosfera vivace con persone sfocate',
-            'Dettagli dei cocktail colorati',
-            'Taglieri gourmet in primo piano'
+            'Tagliere Opus Nera con salumi di suino nero casertano',
+            'Spritz e cocktail colorati',
+            'Atmosfera vivace dell\'aperitivo al bistrot'
         ]
     };
     return suggestions[mealType] || suggestions.aperitivo;
@@ -195,4 +201,101 @@ function getLocalEvents() {
     };
     
     return events[month] || null;
+}
+
+// New functions for menu integration
+function getMenuItems(mealType) {
+    if (!menuData[mealType]) {
+        return menuData.aperitivo || {};
+    }
+    return menuData[mealType];
+}
+
+function getFeaturedItems(mealType, menuItems) {
+    const featured = {
+        colazione: [
+            'Croissants francesi',
+            'Pain au chocolat', 
+            'Cappuccino',
+            'Omelette parisienne'
+        ],
+        pranzo: [
+            'Tortellini fatti a mano in crema di parmigiano 24 mesi',
+            'Steak Tartare',
+            'Balzac Burger',
+            'Caesar Balzac'
+        ],
+        aperitivo: [
+            'Tagliere Opus Nera con Suino nero casertano',
+            'Assiete de Fromage francesi',
+            'Acciughe del Cantabrico con burro di Normandia',
+            'Spritz'
+        ]
+    };
+    
+    return featured[mealType] || featured.aperitivo;
+}
+
+function getCompetitorInsights() {
+    const competitors = [
+        {
+            name: 'Osteria Francescana',
+            type: 'Fine Dining',
+            avg_engagement: 5200,
+            posting_frequency: '2.1 posts/day',
+            top_strategies: ['#modena', '#michelinguide', '#finedining', '#bottura']
+        },
+        {
+            name: 'Casa Maria Luigia',
+            type: 'Resort & Restaurant',
+            avg_engagement: 3800,
+            posting_frequency: '1.8 posts/day',
+            top_strategies: ['#casapasquale', '#modena', '#luxury', '#countryside']
+        },
+        {
+            name: 'Il Fantino',
+            type: 'Traditional',
+            avg_engagement: 2100,
+            posting_frequency: '1.3 posts/day',
+            top_strategies: ['#tradizione', '#modena', '#cucinaemiliana', '#tortellini']
+        },
+        {
+            name: 'Trattoria Aldina',
+            type: 'Traditional',
+            avg_engagement: 1800,
+            posting_frequency: '1.0 posts/day', 
+            top_strategies: ['#modena', '#trattoria', '#casalingo', '#lambrusco']
+        },
+        {
+            name: 'Hosteria Giusti',
+            type: 'Historic Deli',
+            avg_engagement: 2800,
+            posting_frequency: '1.5 posts/day',
+            top_strategies: ['#giusti', '#modena', '#salumeria', '#storico', '#aceto']
+        },
+        {
+            name: 'Ristorante Zelmira',
+            type: 'Modern Italian',
+            avg_engagement: 1600,
+            posting_frequency: '1.2 posts/day',
+            top_strategies: ['#modena', '#moderna', '#innovative', '#wine']
+        },
+        {
+            name: 'Antica Moka',
+            type: 'Café & Bistrot',
+            avg_engagement: 1200,
+            posting_frequency: '2.0 posts/day',
+            top_strategies: ['#modena', '#caffè', '#colazione', '#aperitivo']
+        },
+        {
+            name: 'Caffè Concerto',
+            type: 'Historic Café',
+            avg_engagement: 900,
+            posting_frequency: '1.4 posts/day',
+            top_strategies: ['#modena', '#storico', '#caffè', '#centro']
+        }
+    ];
+    
+    // Return random competitor for variety
+    return competitors[Math.floor(Math.random() * competitors.length)];
 }

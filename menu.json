@@ -1,0 +1,517 @@
+{
+  "colazione": {
+    "name": "Colazione",
+    "time": "08:00",
+    "items": [
+      {
+        "name": "Croissants francesi",
+        "description": "Croissants freschi francesi con burro di Normandia"
+      },
+      {
+        "name": "Pain au chocolat",
+        "description": "Pasta sfoglia con cioccolato fondente"
+      },
+      {
+        "name": "Pain aux raisins",
+        "description": "Dolce francese con uvetta e crema"
+      },
+      {
+        "name": "Quiche Lorrain",
+        "price": "5,00",
+        "description": "Pasta Brisè, bacon, uova latte, panna, noce moscata"
+      },
+      {
+        "name": "Bruschetta",
+        "price": "6,00",
+        "description": "Pane di Altamura, pomodorini datterini, basilico, olio d'oliva pugliese"
+      },
+      {
+        "name": "Avocado Toast",
+        "price": "10,00",
+        "description": "avocado, limone, salmone affumicato, erba cipollina"
+      },
+      {
+        "name": "Omelette herbe fine",
+        "price": "8,00",
+        "description": "con erba cipollina"
+      },
+      {
+        "name": "Omelette parisienne",
+        "price": "9,00",
+        "description": "con prosciutto e formaggio"
+      },
+      {
+        "name": "Crêpes Nutella",
+        "price": "6,00",
+        "description": "crepes con Nutella e panna montata"
+      },
+      {
+        "name": "Crêpes Suzette",
+        "price": "6,00",
+        "description": "crepes suzette classiche"
+      }
+    ],
+    "beverages": [
+      {
+        "name": "Caffè",
+        "price": "1,50"
+      },
+      {
+        "name": "Cappuccino",
+        "price": "1,80"
+      },
+      {
+        "name": "Latte macchiato",
+        "price": "2,00"
+      },
+      {
+        "name": "Marocchino",
+        "price": "2,50"
+      },
+      {
+        "name": "Macchiatone",
+        "price": "1,70"
+      },
+      {
+        "name": "Cioccolata",
+        "price": "4,00"
+      },
+      {
+        "name": "Aggiunta panna",
+        "price": "0,50"
+      },
+      {
+        "name": "Deca",
+        "price": "1,60"
+      },
+      {
+        "name": "Orzo",
+        "price": "1,80"
+      },
+      {
+        "name": "Ginseng",
+        "price": "1,80"
+      },
+      {
+        "name": "Thé Damman Frères Verde",
+        "price": "4,50"
+      },
+      {
+        "name": "Thé Damman Frères Nero",
+        "price": "4,50"
+      },
+      {
+        "name": "Tisana",
+        "price": "4,50"
+      },
+      {
+        "name": "Thé Limone",
+        "price": "4,50"
+      },
+      {
+        "name": "Thé Aromatici",
+        "price": "4,50"
+      },
+      {
+        "name": "Camomilla",
+        "price": "4,50"
+      }
+    ]
+  },
+  "pranzo": {
+    "name": "Pranzo", 
+    "time": "13:00",
+    "items": [
+      {
+        "name": "Tortellini",
+        "price": "16,00",
+        "description": "fatti a mano in crema di parmigiano stagionato 24 mesi"
+      },
+      {
+        "name": "Steak Tartare",
+        "price": "16,00", 
+        "description": "Manzo, senape, scalogno, worcestershire"
+      },
+      {
+        "name": "Balzac Burger",
+        "price": "15,00",
+        "description": "hamburgher, formaggio, maionese, lattuga, pomodori"
+      },
+      {
+        "name": "Croque Monsieur",
+        "price": "12,00",
+        "description": "Besciamella, prosciutto cotto, gruyère, senape"
+      },
+      {
+        "name": "Club Sandwich",
+        "price": "12,00",
+        "description": "Pollo, pancetta affumicata, uova, maionese, insalata, pomodori"
+      },
+      {
+        "name": "Quiche Lorrain",
+        "price": "5,00",
+        "description": "Pasta Brisè, bacon, uova latte, panna, noce moscata"
+      },
+      {
+        "name": "Bruschetta",
+        "price": "6,00",
+        "description": "Pane di Altamura, pomodorini datterini, basilico, olio d'oliva pugliese"
+      },
+      {
+        "name": "Avocado Toast",
+        "price": "10,00",
+        "description": "avocado, limone, salmone affumicato, erba cipollina"
+      },
+      {
+        "name": "Omelette herbe fine",
+        "price": "8,00",
+        "description": "con erba cipollina"
+      },
+      {
+        "name": "Omelette parisienne",
+        "price": "9,00",
+        "description": "con prosciutto e formaggio"
+      }
+    ],
+    "salads": [
+      {
+        "name": "Caesar Balzac",
+        "price": "12,00",
+        "description": "pollo, pancetta affumicata, parmigiano, acciughe, insalata, mayo"
+      },
+      {
+        "name": "Salade Niçoise",
+        "price": "13,00",
+        "description": "tonno, uova sode, fagiolini, pomodorini, patate, olive, insalate"
+      }
+    ],
+    "desserts": [
+      {
+        "name": "Tarte aux fraises",
+        "price": "6,00",
+        "description": "cestino di pasta frolla, crema pasticcera, marmellata, fragole"
+      },
+      {
+        "name": "Coeurs chaud au chocolat",
+        "price": "6,00",
+        "description": "tortino al cioccolato con cuore caldo, gelato al mascarpone"
+      },
+      {
+        "name": "Crêpes Nutella",
+        "price": "6,00",
+        "description": "crepes con Nutella e panna montata"
+      },
+      {
+        "name": "Crêpes Suzette",
+        "price": "6,00",
+        "description": "crepes suzette classiche"
+      },
+      {
+        "name": "Gelato al mascarpone",
+        "price": "5,00",
+        "description": "gelato artigianale al mascarpone"
+      }
+    ]
+  },
+  "aperitivo": {
+    "name": "Aperitivo",
+    "time": "19:00", 
+    "items": [
+      {
+        "name": "Tagliere Opus Nera",
+        "price": "18,00",
+        "description": "Salumi di Suino nero casertano (spalla di maiale, coppa, salame)"
+      },
+      {
+        "name": "Assiete de Fromage",
+        "price": "16,00",
+        "description": "Comtè 14 mois, brillant savarin, bleu d'auvergne, st. maure dragonniere, reblochon"
+      },
+      {
+        "name": "Acciughe del cantabrico",
+        "price": "12,00",
+        "description": "Servite con pane tostato e burro francese di Normandia"
+      },
+      {
+        "name": "Patate al forno",
+        "price": "6,00", 
+        "description": "Patate al forno con aglio, sale olio e rosmarino"
+      },
+      {
+        "name": "Bruschetta",
+        "price": "6,00",
+        "description": "Pane di Altamura, pomodorini datterini, basilico, olio d'oliva pugliese"
+      },
+      {
+        "name": "Avocado Toast",
+        "price": "10,00",
+        "description": "avocado, limone, salmone affumicato, erba cipollina"
+      }
+    ],
+    "cocktails": [
+      {
+        "name": "Spritz",
+        "price": "7,00"
+      },
+      {
+        "name": "Americano",
+        "price": "8,00"
+      },
+      {
+        "name": "Negroni",
+        "price": "9,00"
+      },
+      {
+        "name": "Sbagliato",
+        "price": "9,00"
+      },
+      {
+        "name": "Gin Tonic",
+        "price": "9,00"
+      },
+      {
+        "name": "Moscow Mule",
+        "price": "9,00"
+      },
+      {
+        "name": "Gin Tonic (premium)",
+        "price": "11,00"
+      },
+      {
+        "name": "Kir Royal",
+        "price": "13,00"
+      },
+      {
+        "name": "Analcolico",
+        "price": "7,00"
+      }
+    ],
+    "beverages": [
+      {
+        "name": "Acqua Plose 0,5 cl",
+        "price": "2,00"
+      },
+      {
+        "name": "Perrier 0.33 cl",
+        "price": "3,00"
+      },
+      {
+        "name": "Aranciata",
+        "price": "4,00"
+      },
+      {
+        "name": "Spremuta d'arancia",
+        "price": "4,50"
+      },
+      {
+        "name": "Cedrata",
+        "price": "4,00"
+      },
+      {
+        "name": "Ginger beer",
+        "price": "4,00"
+      },
+      {
+        "name": "Coca Cola",
+        "price": "4,00"
+      },
+      {
+        "name": "Crodino",
+        "price": "4,00"
+      },
+      {
+        "name": "Succhi di frutta (plose bio)",
+        "price": "4,00",
+        "description": "pesca, ace, arancia, ananas, mirtillo"
+      }
+    ]
+  },
+  "wines": {
+    "rouge": [
+      {
+        "name": "Sangiovese di Romagna I Mandorli",
+        "producer": "Fattoria Nicolucci",
+        "price_glass": "6,00",
+        "price_bottle": "24,00"
+      },
+      {
+        "name": "Valpolicella Ripasso",
+        "producer": "Cantine Negrar",
+        "price_glass": "7,00",
+        "price_bottle": "28,00"
+      },
+      {
+        "name": "Fougas Organic Bordeaux",
+        "producer": "Chateau Fougas",
+        "price_bottle": "26,00"
+      },
+      {
+        "name": "Pinot Noir Vin de France",
+        "producer": "Doudet-Naudin",
+        "price_glass": "9,00",
+        "price_bottle": "45,00"
+      },
+      {
+        "name": "Frappato Junco Sicilia",
+        "producer": "Cantine Pellegrino",
+        "price_bottle": "39,00"
+      }
+    ],
+    "blancs": [
+      {
+        "name": "Chardonnay Tormaresca",
+        "producer": "Marchesi Antinori",
+        "price_glass": "7,00",
+        "price_bottle": "24,00"
+      },
+      {
+        "name": "Gewurztraminer Pannon",
+        "producer": "Tuzko Antinori",
+        "price_glass": "7,00",
+        "price_bottle": "26,00"
+      },
+      {
+        "name": "Il salinaro Grillo Sicilia",
+        "producer": "Cantine Pellegrino",
+        "price_bottle": "26,00"
+      },
+      {
+        "name": "Gibelè Aromatico Sicilia",
+        "producer": "Cantine Pellegrino", 
+        "price_bottle": "24,00"
+      },
+      {
+        "name": "Chablis",
+        "producer": "Domaines Brocard",
+        "price_bottle": "38,00"
+      },
+      {
+        "name": "Sancerre Grande Réserve 2021",
+        "producer": "Michel Laurent",
+        "price_glass": "8,00",
+        "price_bottle": "36,00"
+      },
+      {
+        "name": "Le P'tit Chenin Anjou Blanc",
+        "producer": "Michel Laurent",
+        "price_bottle": "45,00"
+      }
+    ],
+    "bolle_modenesi": [
+      {
+        "name": "Lambrusco di Sorbara Vigna del Cristo",
+        "producer": "Cavicchioli",
+        "price_glass": "6,00",
+        "price_bottle": "24,00"
+      },
+      {
+        "name": "Lambrusco Grasparossa Villa Cialdini DOC",
+        "producer": "Cleto Chiarli",
+        "price_glass": "6,00",
+        "price_bottle": "22,00"
+      }
+    ],
+    "bolle_italiane": [
+      {
+        "name": "Valdobbiadene Prosecco Superiore DOCG",
+        "price_glass": "7,00",
+        "price_bottle": "26,00"
+      },
+      {
+        "name": "Franciacorta DOCG Brut Blanc de Blancs",
+        "price_glass": "8,00",
+        "price_bottle": "34,00"
+      },
+      {
+        "name": "Franciacorta DOCG Brut Saten",
+        "price_bottle": "36,00"
+      },
+      {
+        "name": "Franciacorta DOCG Brut Rosé",
+        "price_glass": "8,00",
+        "price_bottle": "36,00"
+      },
+      {
+        "name": "Trento DOC Brut Ferrari Maximum",
+        "producer": "Ferrari",
+        "price_glass": "8,00",
+        "price_bottle": "38,00"
+      },
+      {
+        "name": "Crémant de Bourgogne Blanc",
+        "producer": "Doudet-Naudin",
+        "price_bottle": "49,00"
+      }
+    ],
+    "champagne": [
+      {
+        "name": "Special Cuvée",
+        "producer": "Bollinger",
+        "price_bottle": "90,00"
+      },
+      {
+        "name": "Blanc De Blanc",
+        "producer": "Ruinart",
+        "price_bottle": "110,00"
+      },
+      {
+        "name": "Rosé",
+        "producer": "Ruinart",
+        "price_bottle": "120,00"
+      },
+      {
+        "name": "La cuvèe",
+        "producer": "Laurent-Perrier",
+        "price_glass": "12,00",
+        "price_bottle": "70,00"
+      },
+      {
+        "name": "Louis Hurtebisse",
+        "producer": "Alain Mercier",
+        "price_bottle": "70,00"
+      },
+      {
+        "name": "Blanc De Blanc Gran Cru",
+        "producer": "A. Bergère",
+        "price_bottle": "90,00"
+      },
+      {
+        "name": "Dom Pérignon Vintage 2010",
+        "producer": "Moët-Chandon",
+        "price_bottle": "250,00"
+      },
+      {
+        "name": "Grand Cuvée",
+        "producer": "Krug",
+        "price_bottle": "300,00"
+      }
+    ]
+  },
+  "beers": [
+    {
+      "name": "Agricola (Bionda chiara)",
+      "producer": "Birrificio del Salento",
+      "price": "5,00"
+    },
+    {
+      "name": "Agricola (Ambrata)",
+      "producer": "Birrificio del Salento",
+      "price": "6,00"
+    },
+    {
+      "name": "Fresca (Bianca)",
+      "producer": "Birrificio del Salento",
+      "price": "6,00"
+    },
+    {
+      "name": "Tipa (IPA)",
+      "producer": "Birrificio del Salento",
+      "price": "6,00"
+    }
+  ],
+  "services": {
+    "servizio_colazione": "0,50€",
+    "servizio_aperitivo": "1€",
+    "coperto_cucina": "2€"
+  }
+}
