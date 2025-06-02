@@ -33,13 +33,11 @@ export default async function handler(req, res) {
         const randomFeaturedItems = getRandomFeaturedItems(meal_type, menuItems);
 
         // Fetch real data in parallel
-        const [hashtagData, competitorData] = await Promise.all([
+        const [hashtagData, instagramInsights, competitorData] = await Promise.all([
             getApifyHashtagData(meal_type),
-            // getInstagramInsights(), // Token expired - disabled temporarily
+            getInstagramInsights(), // Token updated - re-enabled
             getCompetitorAnalysis(meal_type)
         ]);
-        
-        const instagramInsights = { data: null, avg_engagement: 1500 }; // Fallback data
 
         // Generate optimized response
         const data = {
