@@ -81,14 +81,16 @@ export default async function handler(req, res) {
 // Apify Integration - Real hashtag data
 async function getApifyHashtagData(mealType) {
     try {
-        // First, start the Apify actor run
-        const runResponse = await fetch(`https://api.apify.com/v2/acts/dSCLg0C3YEBe3HI4p/runs?token=${APIFY_TOKEN}`, {
+        // Use the official Instagram Hashtag Scraper
+        const runResponse = await fetch(`https://api.apify.com/v2/acts/reGe1ST3OBgYZSsZJ/runs?token=${APIFY_TOKEN}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                searchType: 'hashtag',
+                hashtags: getSearchHashtags(mealType),
+                resultsLimit: 30,
+                resultsType: 'posts',
                 searchLimit: 5,
-                hashtags: getSearchHashtags(mealType)
+                searchType: 'hashtag'
             })
         });
 
@@ -105,7 +107,7 @@ async function getApifyHashtagData(mealType) {
         while (attempts < 15) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            const statusResponse = await fetch(`https://api.apify.com/v2/acts/dSCLg0C3YEBe3HI4p/runs/${runId}?token=${APIFY_TOKEN}`);
+            const statusResponse = await fetch(`https://api.apify.com/v2/acts/reGe1ST3OBgYZSsZJ/runs/${runId}?token=${APIFY_TOKEN}`);
             const status = await statusResponse.json();
             
             if (status.data.status === 'SUCCEEDED') {
@@ -171,20 +173,48 @@ async function getCompetitorAnalysis(mealType) {
 
 // Process Apify hashtag data
 function processApifyData(data, mealType) {
-    const hashtags = [];
+    const hashtagStats = {};
     const trending = [];
     const topHashtags = [];
     
-    // Extract real hashtag performance
-    data.forEach(item => {
-        if (item.postsCount > 10000) {
-            trending.push(`#${item.name}`);
-        }
-        
+    // Analyze real posts data
+    if (Array.isArray(data)) {
+        data.forEach(post => {
+            // Extract hashtags from caption
+            if (post.caption) {
+                const hashtags = post.caption.match(/#[a-zA-Z0-9_]+/g) || [];
+                hashtags.forEach(tag => {
+                    if (!hashtagStats[tag]) {
+                        hashtagStats[tag] = {
+                            tag: tag,
+                            count: 0,
+                            totalLikes: 0,
+                            totalComments: 0
+                        };
+                    }
+                    hashtagStats[tag].count++;
+                    hashtagStats[tag].totalLikes += post.likesCount || 0;
+                    hashtagStats[tag].totalComments += post.commentsCount || 0;
+                });
+            }
+            
+            // Track trending based on recent high engagement
+            if ((post.likesCount || 0) > 1000) {
+                const postHashtags = post.caption?.match(/#[a-zA-Z0-9_]+/g) || [];
+                postHashtags.slice(0, 3).forEach(tag => {
+                    if (!trending.includes(tag)) trending.push(tag);
+                });
+            }
+        });
+    }
+    
+    // Calculate average engagement per hashtag
+    Object.values(hashtagStats).forEach(stat => {
+        const avgEngagement = Math.round((stat.totalLikes + stat.totalComments) / stat.count);
         topHashtags.push({
-            tag: `#${item.name}`,
-            posts: item.postsCount,
-            avg_engagement: Math.round(item.postsCount * 0.03) // Estimated 3% engagement
+            tag: stat.tag,
+            posts: stat.count,
+            avg_engagement: avgEngagement
         });
     });
     
