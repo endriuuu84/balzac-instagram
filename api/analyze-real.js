@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
+// Remove node-fetch import as it's not needed in Node 18+
 
 // Load menu data
 const menuData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'menu.json'), 'utf8'));
@@ -86,8 +86,7 @@ async function getApifyHashtagData(mealType) {
             body: JSON.stringify({
                 hashtags: getSearchHashtags(mealType),
                 resultsLimit: 10
-            }),
-            timeout: 10000
+            })
         });
 
         if (!response.ok) throw new Error('Apify request failed');
@@ -133,8 +132,7 @@ async function getCompetitorAnalysis(mealType) {
             body: JSON.stringify({
                 usernames: [randomCompetitor.handle],
                 resultsLimit: 5
-            }),
-            timeout: 8000
+            })
         });
 
         if (!response.ok) throw new Error('Competitor analysis failed');
