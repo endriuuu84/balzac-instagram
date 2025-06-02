@@ -11,9 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('dashboard-control'));
 
-// Import API handlers
-const analyzeHandler = require('./api/analyze.js').default;
-const analyzeRealHandler = require('./api/analyze-real.js').default;
+// Import API handlers - we'll create wrapper functions
+const analyzeHandler = require('./api/analyze-wrapper.js');
+const analyzeRealHandler = require('./api/analyze-real-wrapper.js');
 
 // API Routes
 app.post('/api/analyze', async (req, res) => {
