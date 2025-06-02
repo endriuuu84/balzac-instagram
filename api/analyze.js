@@ -293,6 +293,48 @@ function getCompetitorInsights() {
             avg_engagement: 900,
             posting_frequency: '1.4 posts/day',
             top_strategies: ['#modena', '#storico', '#caffè', '#centro']
+        },
+        {
+            name: 'Freedom',
+            type: 'Bar & Lounge',
+            avg_engagement: 1400,
+            posting_frequency: '1.6 posts/day',
+            top_strategies: ['#modena', '#aperitivo', '#cocktails', '#nightlife']
+        },
+        {
+            name: 'Bar Mana',
+            type: 'Cocktail Bar',
+            avg_engagement: 1100,
+            posting_frequency: '1.3 posts/day',
+            top_strategies: ['#modena', '#cocktails', '#craft', '#mixology']
+        },
+        {
+            name: "L'Archivio",
+            type: 'Wine Bar & Restaurant',
+            avg_engagement: 1300,
+            posting_frequency: '1.2 posts/day',
+            top_strategies: ['#modena', '#wine', '#aperitivo', '#gourmet']
+        },
+        {
+            name: "Benny's Bar",
+            type: 'American Bar',
+            avg_engagement: 1000,
+            posting_frequency: '1.4 posts/day',
+            top_strategies: ['#modena', '#americanbar', '#burgers', '#beers']
+        },
+        {
+            name: 'Cattedrali',
+            type: 'Restaurant & Bar',
+            avg_engagement: 1600,
+            posting_frequency: '1.5 posts/day',
+            top_strategies: ['#modena', '#restaurant', '#aperitivo', '#elegante']
+        },
+        {
+            name: 'Cibo',
+            type: 'Modern Restaurant',
+            avg_engagement: 1800,
+            posting_frequency: '1.7 posts/day',
+            top_strategies: ['#modena', '#modernfood', '#innovative', '#design']
         }
     ];
     
