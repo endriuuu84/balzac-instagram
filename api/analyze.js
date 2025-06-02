@@ -26,6 +26,9 @@ export default async function handler(req, res) {
 
         // Get menu items for this meal type
         const menuItems = getMenuItems(meal_type);
+        
+        // Get random featured items for variety
+        const randomFeaturedItems = getRandomFeaturedItems(meal_type, menuItems);
 
         // Genera dati ottimizzati per il tipo di pasto
         const data = {
@@ -46,7 +49,7 @@ export default async function handler(req, res) {
                 day_type: getDayType(),
                 weather_mood: getWeatherMood(),
                 local_events: getLocalEvents(),
-                featured_items: getFeaturedItems(meal_type, menuItems),
+                featured_items: randomFeaturedItems,
                 competitor_insights: getCompetitorInsights()
             }
         };
@@ -340,4 +343,37 @@ function getCompetitorInsights() {
     
     // Return random competitor for variety
     return competitors[Math.floor(Math.random() * competitors.length)];
+}
+
+function getRandomFeaturedItems(mealType, menuItems) {
+    const items = [];
+    
+    if (mealType === 'colazione' && menuItems.items && menuItems.beverages) {
+        // Pick 2-3 random food items
+        const randomFoods = getRandomItems(menuItems.items, 2);
+        const randomBeverage = getRandomItems(menuItems.beverages, 1);
+        items.push(...randomFoods.map(item => item.name + (item.description ? ': ' + item.description : '')));
+        items.push(...randomBeverage.map(item => item.name));
+    }
+    else if (mealType === 'pranzo' && menuItems.items) {
+        // Pick 2 main dishes and 1 salad
+        const randomMains = getRandomItems(menuItems.items, 2);
+        const randomSalad = menuItems.salads ? getRandomItems(menuItems.salads, 1) : [];
+        items.push(...randomMains.map(item => item.name + (item.description ? ': ' + item.description : '')));
+        items.push(...randomSalad.map(item => item.name));
+    }
+    else if (mealType === 'aperitivo' && menuItems.items && menuItems.cocktails) {
+        // Pick 2 food items and 2 cocktails
+        const randomFoods = getRandomItems(menuItems.items, 2);
+        const randomCocktails = getRandomItems(menuItems.cocktails, 2);
+        items.push(...randomFoods.map(item => item.name + (item.description ? ': ' + item.description : '')));
+        items.push(...randomCocktails.map(item => item.name));
+    }
+    
+    return items.length > 0 ? items : getFeaturedItems(mealType, menuItems);
+}
+
+function getRandomItems(array, count) {
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
 }
