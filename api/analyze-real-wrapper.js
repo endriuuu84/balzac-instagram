@@ -6,8 +6,10 @@ const menuData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'menu.json'
 
 // API Keys from environment
 const APIFY_TOKEN = process.env.APIFY_API_TOKEN;
-const INSTAGRAM_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
+let INSTAGRAM_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
 const INSTAGRAM_ACCOUNT_ID = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID;
+const INSTAGRAM_APP_ID = process.env.INSTAGRAM_APP_ID;
+const INSTAGRAM_APP_SECRET = process.env.INSTAGRAM_APP_SECRET;
 
 async function handler(req, res) {
     // Enable CORS
@@ -31,6 +33,9 @@ async function handler(req, res) {
         const menuItems = getMenuItems(meal_type);
         const randomFeaturedItems = getRandomFeaturedItems(meal_type, menuItems);
 
+        // Ensure Instagram token is valid before fetching data
+        await ensureValidInstagramToken();
+        
         // Fetch real data in parallel
         const [hashtagData, instagramInsights, competitorData] = await Promise.all([
             getApifyHashtagData(meal_type),
@@ -126,18 +131,37 @@ async function getApifyHashtagData(mealType) {
     }
 }
 
-// Instagram Graph API - Real insights
+// Instagram Graph API - Real insights with auto-refresh
 async function getInstagramInsights() {
     try {
         console.log('📈 Fetching Instagram insights...');
         
-        const response = await fetch(
+        let response = await fetch(
             `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(engagement,impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
         );
 
+        // If token expired, try to refresh it
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (errorData.error && errorData.error.code === 190) {
+                console.log('🔄 Instagram token expired, attempting refresh...');
+                const newToken = await refreshInstagramToken();
+                
+                if (newToken) {
+                    INSTAGRAM_TOKEN = newToken;
+                    console.log('✅ Instagram token refreshed successfully');
+                    
+                    // Retry the request with new token
+                    response = await fetch(
+                        `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(engagement,impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
+                    );
+                }
+            }
+        }
+
         if (!response.ok) {
             const errorText = await response.text();
-            console.log(`Instagram API failed: ${response.status} - ${errorText}`);
+            console.log(`Instagram API failed after refresh: ${response.status} - ${errorText}`);
             throw new Error('Instagram API failed');
         }
         
@@ -148,6 +172,66 @@ async function getInstagramInsights() {
     } catch (error) {
         console.log('Instagram API fallback:', error.message);
         return { data: null, avg_engagement: 1500 };
+    }
+}
+
+// Auto-refresh Instagram token when it expires
+async function refreshInstagramToken() {
+    try {
+        console.log('🔄 Refreshing Instagram access token...');
+        
+        const response = await fetch(
+            `https://graph.facebook.com/v18.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${INSTAGRAM_APP_ID}&client_secret=${INSTAGRAM_APP_SECRET}&fb_exchange_token=${INSTAGRAM_TOKEN}`
+        );
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.log(`Token refresh failed: ${response.status} - ${errorText}`);
+            return null;
+        }
+        
+        const data = await response.json();
+        
+        if (data.access_token) {
+            console.log(`✅ New token expires in: ${data.expires_in || 'unknown'} seconds`);
+            return data.access_token;
+        }
+        
+        console.log('❌ No access_token in refresh response');
+        return null;
+        
+    } catch (error) {
+        console.log('❌ Token refresh error:', error.message);
+        return null;
+    }
+}
+
+// Check token validity and refresh proactively
+async function ensureValidInstagramToken() {
+    try {
+        // Test current token with a simple request
+        const testResponse = await fetch(
+            `https://graph.facebook.com/v18.0/me?access_token=${INSTAGRAM_TOKEN}`
+        );
+        
+        if (!testResponse.ok) {
+            const errorData = await testResponse.json();
+            if (errorData.error && errorData.error.code === 190) {
+                console.log('🔄 Proactive token refresh needed');
+                const newToken = await refreshInstagramToken();
+                if (newToken) {
+                    INSTAGRAM_TOKEN = newToken;
+                    return true;
+                }
+                return false;
+            }
+        }
+        
+        return true; // Token is valid
+        
+    } catch (error) {
+        console.log('Token validation error:', error.message);
+        return false;
     }
 }
 
