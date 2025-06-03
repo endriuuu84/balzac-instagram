@@ -38,6 +38,19 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Debug endpoint to check environment variables
+app.get('/debug/env', (req, res) => {
+    res.json({
+        hasApifyToken: !!process.env.APIFY_API_TOKEN,
+        hasInstagramToken: !!process.env.INSTAGRAM_ACCESS_TOKEN,
+        hasInstagramAppId: !!process.env.INSTAGRAM_APP_ID,
+        hasInstagramAppSecret: !!process.env.INSTAGRAM_APP_SECRET,
+        hasInstagramAccountId: !!process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID,
+        tokenLength: process.env.INSTAGRAM_ACCESS_TOKEN ? process.env.INSTAGRAM_ACCESS_TOKEN.length : 0,
+        timestamp: new Date().toISOString()
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`🚀 Balzac Instagram server running on port ${PORT}`);
     console.log(`📊 API endpoints:`);
