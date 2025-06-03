@@ -180,7 +180,26 @@ function processApifyData(data, mealType) {
         data.forEach(post => {
             if (post.caption) {
                 const hashtags = post.caption.match(/#[a-zA-Z0-9_]+/g) || [];
-                hashtags.forEach(tag => {
+                // Filter for relevant hashtags (Italian food, local terms, meal-specific)
+                const relevantHashtags = hashtags.filter(tag => {
+                    const lowerTag = tag.toLowerCase();
+                    return (
+                        lowerTag.includes('modena') ||
+                        lowerTag.includes('emilia') ||
+                        lowerTag.includes('italian') ||
+                        lowerTag.includes('food') ||
+                        lowerTag.includes('restaurant') ||
+                        lowerTag.includes('bistrot') ||
+                        lowerTag.includes('cafe') ||
+                        lowerTag.includes('bar') ||
+                        lowerTag.includes(mealType) ||
+                        (mealType === 'colazione' && (lowerTag.includes('breakfast') || lowerTag.includes('cappuccino') || lowerTag.includes('coffee') || lowerTag.includes('croissant'))) ||
+                        (mealType === 'pranzo' && (lowerTag.includes('lunch') || lowerTag.includes('pasta') || lowerTag.includes('tortellini') || lowerTag.includes('primi'))) ||
+                        (mealType === 'aperitivo' && (lowerTag.includes('spritz') || lowerTag.includes('cocktail') || lowerTag.includes('happy') || lowerTag.includes('drink')))
+                    );
+                });
+                
+                relevantHashtags.forEach(tag => {
                     if (!hashtagStats[tag]) {
                         hashtagStats[tag] = {
                             tag: tag,
@@ -195,9 +214,14 @@ function processApifyData(data, mealType) {
                 });
             }
             
-            if ((post.likesCount || 0) > 1000) {
+            // Lower threshold for trending to capture more data
+            if ((post.likesCount || 0) > 100) {
                 const postHashtags = post.caption?.match(/#[a-zA-Z0-9_]+/g) || [];
-                postHashtags.slice(0, 3).forEach(tag => {
+                const relevantTrending = postHashtags.filter(tag => {
+                    const lowerTag = tag.toLowerCase();
+                    return lowerTag.includes('modena') || lowerTag.includes('italian') || lowerTag.includes('food');
+                });
+                relevantTrending.slice(0, 2).forEach(tag => {
                     if (!trending.includes(tag)) trending.push(tag);
                 });
             }
@@ -216,23 +240,23 @@ function processApifyData(data, mealType) {
     
     topHashtags.sort((a, b) => b.avg_engagement - a.avg_engagement);
     
-    // Mix popular, medium, and niche hashtags
-    const popular = topHashtags.slice(0, 5);
-    const medium = topHashtags.slice(5, 15);
+    // Always prioritize local hashtags, then add relevant ones from Apify
     const niche = getLocalHashtags(mealType);
+    const relevant = topHashtags.slice(0, 8).map(h => h.tag); // Use top 8 relevant hashtags
+    const defaultForMealType = getDefaultHashtagsForMealType(mealType);
     
     const optimizedHashtags = [
-        ...popular.map(h => h.tag),
-        ...medium.slice(0, 10).map(h => h.tag),
-        ...niche
-    ].join(' ');
+        ...niche, // Always include local Modena hashtags first
+        ...relevant, // Add relevant hashtags from Apify
+        ...defaultForMealType // Fill remaining with meal-specific defaults
+    ].slice(0, 20).join(' '); // Limit to 20 hashtags total
     
     console.log(`✅ Generated optimized hashtags: ${optimizedHashtags.split(' ').length} hashtags`);
     
     return {
         optimized_hashtags: optimizedHashtags,
         top_hashtags: topHashtags.slice(0, 5),
-        trending: trending.slice(0, 5),
+        trending: trending.slice(0, 3),
         avoid: [],
         source: 'apify_live'
     };
@@ -278,9 +302,9 @@ function processInstagramData(data) {
 // Helper functions
 function getSearchHashtags(mealType) {
     const searchTerms = {
-        colazione: ['colazione', 'breakfast', 'cappuccino', 'croissant', 'modena'],
-        pranzo: ['pranzo', 'lunch', 'pasta', 'tortellini', 'modena'],
-        aperitivo: ['aperitivo', 'spritz', 'happyhour', 'cocktails', 'modena']
+        colazione: ['modenafood', 'modena', 'emiliaromagna', 'colazione', 'cappuccino'],
+        pranzo: ['modenafood', 'modena', 'emiliaromagna', 'tortellini', 'pranzo'],
+        aperitivo: ['modenafood', 'modena', 'emiliaromagna', 'aperitivo', 'spritz']
     };
     return searchTerms[mealType] || searchTerms.aperitivo;
 }
@@ -407,6 +431,15 @@ function getDefaultHashtags(mealType) {
         aperitivo: '#aperitivo #spritz #happyhour #modena #aperitif #cocktails #aperitivotime #modenaapertime #balzacmodena #aperol #drinks #aperitivoitaliano #socialdrinks #afterwork #spritztime #modenabynight #cocktailbar #balzacaperitivo #cheers #balzacbistrot'
     };
     return baseHashtags[mealType] || baseHashtags.aperitivo;
+}
+
+function getDefaultHashtagsForMealType(mealType) {
+    const mealSpecific = {
+        colazione: ['#cappuccino', '#breakfast', '#coffee', '#croissant', '#cornetto', '#buongiorno', '#morningvibes'],
+        pranzo: ['#pasta', '#tortellini', '#lunch', '#italianfood', '#cucinaemiliana', '#primi', '#buonappetito'],
+        aperitivo: ['#spritz', '#cocktails', '#happyhour', '#aperol', '#drinks', '#afterwork', '#cheers']
+    };
+    return mealSpecific[mealType] || mealSpecific.aperitivo;
 }
 
 function getTrendingHashtags() {
