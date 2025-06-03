@@ -137,7 +137,7 @@ async function getInstagramInsights() {
         console.log('📈 Fetching Instagram insights...');
         
         let response = await fetch(
-            `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(engagement,impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
+            `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
         );
 
         // If token expired, try to refresh it
@@ -153,7 +153,7 @@ async function getInstagramInsights() {
                     
                     // Retry the request with new token
                     response = await fetch(
-                        `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(engagement,impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
+                        `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,caption,comments_count,like_count,timestamp,insights.metric(impressions,reach)&limit=10&access_token=${INSTAGRAM_TOKEN}`
                     );
                 }
             }

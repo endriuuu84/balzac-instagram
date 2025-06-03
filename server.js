@@ -95,7 +95,7 @@ app.get('/debug/instagram', async (req, res) => {
         let insightsError = null;
         try {
             const insightsResponse = await fetch(
-                `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,insights.metric(engagement,impressions,reach)&limit=1&access_token=${INSTAGRAM_TOKEN}`
+                `https://graph.facebook.com/v18.0/${INSTAGRAM_ACCOUNT_ID}/media?fields=id,insights.metric(impressions,reach)&limit=1&access_token=${INSTAGRAM_TOKEN}`
             );
             
             if (insightsResponse.ok) {
