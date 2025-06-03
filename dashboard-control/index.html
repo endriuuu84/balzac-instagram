@@ -302,6 +302,166 @@
         </div>
     </section>
 
+    <!-- Advanced Hashtag Analytics Section -->
+    <section class="hashtag-analytics">
+        <h2>🎯 ANALYTICS HASHTAG AVANZATE</h2>
+        
+        <!-- Meal Type Selector -->
+        <div class="meal-selector">
+            <button class="meal-btn active" data-meal="colazione" onclick="selectMeal('colazione')">
+                <span class="meal-icon">🌅</span>
+                <span class="meal-text">Colazione</span>
+            </button>
+            <button class="meal-btn" data-meal="pranzo" onclick="selectMeal('pranzo')">
+                <span class="meal-icon">🍝</span>
+                <span class="meal-text">Pranzo</span>
+            </button>
+            <button class="meal-btn" data-meal="aperitivo" onclick="selectMeal('aperitivo')">
+                <span class="meal-icon">🍸</span>
+                <span class="meal-text">Aperitivo</span>
+            </button>
+            <button class="refresh-analytics-btn" onclick="refreshHashtagAnalytics()">
+                <span class="btn-icon">🔄</span>
+                <span class="btn-text">Aggiorna</span>
+            </button>
+        </div>
+
+        <!-- ROI Overview Cards -->
+        <div class="roi-overview">
+            <div class="roi-card best-strategy">
+                <div class="card-header">
+                    <h3>🏆 Strategia Migliore</h3>
+                    <div class="roi-score" id="bestROIScore">-</div>
+                </div>
+                <div class="card-content">
+                    <div class="strategy-name" id="bestStrategyName">Caricamento...</div>
+                    <div class="strategy-description" id="bestStrategyDescription">-</div>
+                    <div class="hashtag-preview" id="bestStrategyHashtags">-</div>
+                </div>
+            </div>
+
+            <div class="roi-card performance-summary">
+                <div class="card-header">
+                    <h3>📈 Performance Generale</h3>
+                </div>
+                <div class="card-content">
+                    <div class="metric-row">
+                        <span class="label">Engagement Medio:</span>
+                        <span class="value" id="avgEngagement">-</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="label">Reach Stimato:</span>
+                        <span class="value" id="estimatedReach">-</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="label">Hashtag Analizzati:</span>
+                        <span class="value" id="hashtagsAnalyzed">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roi-card recommendations">
+                <div class="card-header">
+                    <h3>💡 Raccomandazioni</h3>
+                </div>
+                <div class="card-content">
+                    <div class="recommendation-text" id="overallRecommendation">
+                        Seleziona un tipo di pasto per vedere le raccomandazioni
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Comparison Charts -->
+        <div class="strategy-analysis">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>📊 Confronto Strategie ROI</h3>
+                    <div class="chart-controls">
+                        <select id="chartMetric" onchange="updateChart()">
+                            <option value="roi_score">ROI Score</option>
+                            <option value="engagement">Engagement Rate</option>
+                            <option value="reach">Reach Stimato</option>
+                        </select>
+                    </div>
+                </div>
+                <canvas id="roiComparisonChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>🎯 Performance per Tipo di Contenuto</h3>
+                </div>
+                <canvas id="contentTypeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Strategy Cards -->
+        <div class="strategy-details">
+            <h3>🔍 Analisi Dettagliata Strategie</h3>
+            <div class="strategy-grid" id="strategyGrid">
+                <!-- Strategy cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Hashtag Performance Table -->
+        <div class="hashtag-table-container">
+            <div class="table-header">
+                <h3>📈 Performance Hashtag Individuali</h3>
+                <div class="table-controls">
+                    <input type="text" id="hashtagSearch" placeholder="Cerca hashtag..." onkeyup="filterHashtags()">
+                    <select id="sortBy" onchange="sortHashtags()">
+                        <option value="engagement">Ordina per Engagement</option>
+                        <option value="reach">Ordina per Reach</option>
+                        <option value="posts">Ordina per N. Post</option>
+                    </select>
+                </div>
+            </div>
+            <div class="hashtag-table-wrapper">
+                <table class="hashtag-table" id="hashtagTable">
+                    <thead>
+                        <tr>
+                            <th>Hashtag</th>
+                            <th>Strategia</th>
+                            <th>Engagement</th>
+                            <th>Reach</th>
+                            <th>Posts</th>
+                            <th>Performance</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hashtagTableBody">
+                        <tr>
+                            <td colspan="7" class="no-data">Carica analytics per vedere i dati</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Optimal Posting Times -->
+        <div class="posting-times">
+            <h3>⏰ Orari Ottimali di Posting</h3>
+            <div class="times-grid">
+                <canvas id="postingTimesChart"></canvas>
+                <div class="time-recommendations">
+                    <div class="time-slot best" id="bestTime">
+                        <div class="time-label">Migliore</div>
+                        <div class="time-value">-</div>
+                    </div>
+                    <div class="time-slot good" id="goodTimes">
+                        <div class="time-label">Buoni</div>
+                        <div class="time-value">-</div>
+                    </div>
+                    <div class="time-slot avoid" id="avoidTimes">
+                        <div class="time-label">Da Evitare</div>
+                        <div class="time-value">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Settings Modal -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">

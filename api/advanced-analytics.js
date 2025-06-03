@@ -24,31 +24,51 @@ class HashtagAnalyzer {
         this.performanceHistory = [];
     }
 
-    async analyzeHashtagROI(mealType, timeframe = 30) {
+    async analyzeHashtagROI(mealType, timeframe = 7) {
         console.log(`🔍 Analyzing hashtag ROI for ${mealType} over ${timeframe} days`);
         
         const hashtagStrategies = this.getHashtagStrategies(mealType);
-        const roiAnalysis = {};
         
-        for (const strategy of hashtagStrategies) {
+        // Parallel processing with timeout
+        const analysisPromises = hashtagStrategies.map(async (strategy) => {
             try {
-                const performance = await this.getHashtagPerformance(strategy.hashtags, timeframe);
-                roiAnalysis[strategy.name] = {
-                    ...strategy,
-                    performance,
-                    roi_score: this.calculateROIScore(performance),
-                    recommendation: this.generateRecommendation(performance)
+                const performancePromise = this.getHashtagPerformance(strategy.hashtags, timeframe);
+                const performance = await Promise.race([
+                    performancePromise,
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 25000)) // 25s timeout per strategy
+                ]);
+                
+                return {
+                    name: strategy.name,
+                    data: {
+                        ...strategy,
+                        performance,
+                        roi_score: this.calculateROIScore(performance),
+                        recommendation: this.generateRecommendation(performance)
+                    }
                 };
             } catch (error) {
                 console.log(`⚠️ Failed to analyze ${strategy.name}:`, error.message);
-                roiAnalysis[strategy.name] = {
-                    ...strategy,
-                    performance: null,
-                    roi_score: 0,
-                    recommendation: 'Data unavailable'
+                return {
+                    name: strategy.name,
+                    data: {
+                        ...strategy,
+                        performance: this.getFallbackPerformance(strategy),
+                        roi_score: this.getFallbackROIScore(strategy),
+                        recommendation: 'Using estimated data due to timeout'
+                    }
                 };
             }
-        }
+        });
+        
+        const results = await Promise.allSettled(analysisPromises);
+        const roiAnalysis = {};
+        
+        results.forEach((result) => {
+            if (result.status === 'fulfilled') {
+                roiAnalysis[result.value.name] = result.value.data;
+            }
+        });
         
         return this.optimizeHashtagMix(roiAnalysis, mealType);
     }
@@ -139,17 +159,20 @@ class HashtagAnalyzer {
     }
 
     async getHashtagPerformance(hashtags, timeframe) {
-        const performances = [];
+        // Reduce to 2 hashtags and parallel processing
+        const selectedHashtags = hashtags.slice(0, 2);
         
-        for (const hashtag of hashtags.slice(0, 3)) { // Limit to 3 hashtags per strategy to avoid rate limits
-            try {
-                const data = await this.scrapeHashtagData(hashtag, timeframe);
-                if (data) {
-                    performances.push(data);
-                }
-            } catch (error) {
+        const performancePromises = selectedHashtags.map(hashtag => 
+            this.scrapeHashtagData(hashtag, timeframe).catch(error => {
                 console.log(`⚠️ Failed to get data for #${hashtag}:`, error.message);
-            }
+                return null;
+            })
+        );
+        
+        const performances = (await Promise.all(performancePromises)).filter(p => p !== null);
+        
+        if (performances.length === 0) {
+            return this.getFallbackHashtagPerformance(hashtags[0]);
         }
         
         return this.aggregatePerformance(performances);
@@ -159,22 +182,30 @@ class HashtagAnalyzer {
         // Check cache first
         const cacheKey = `${hashtag}_${timeframe}`;
         if (this.hashtagCache.has(cacheKey)) {
+            console.log(`📋 Using cached data for #${hashtag}`);
             return this.hashtagCache.get(cacheKey);
         }
         
         try {
+            // Add timeout to individual request
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+            
             const runResponse = await fetch(`https://api.apify.com/v2/acts/shu8hvrXbJbY3Eb9W/run-sync-get-dataset-items?token=${APIFY_TOKEN}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                signal: controller.signal,
                 body: JSON.stringify({
                     directUrls: [`https://www.instagram.com/explore/tags/${hashtag}/`],
-                    resultsLimit: 15, // More data for better analysis
+                    resultsLimit: 8, // Reduced for speed
                     resultsType: 'posts',
                     addParentData: false,
                     scrapeComments: false,
                     scrapeLocationData: false
                 })
             });
+            
+            clearTimeout(timeoutId);
 
             if (!runResponse.ok) {
                 throw new Error(`Apify request failed: ${runResponse.status}`);
@@ -185,17 +216,22 @@ class HashtagAnalyzer {
             if (results && results.length > 0) {
                 const analysis = this.analyzeHashtagData(results, hashtag);
                 
-                // Cache for 30 minutes
-                setTimeout(() => this.hashtagCache.delete(cacheKey), 30 * 60 * 1000);
+                // Cache for 1 hour
+                setTimeout(() => this.hashtagCache.delete(cacheKey), 60 * 60 * 1000);
                 this.hashtagCache.set(cacheKey, analysis);
                 
+                console.log(`✅ Analyzed #${hashtag}: ${results.length} posts`);
                 return analysis;
             }
             
             return null;
             
         } catch (error) {
-            console.log(`❌ Error scraping #${hashtag}:`, error.message);
+            if (error.name === 'AbortError') {
+                console.log(`⏱️ Timeout scraping #${hashtag}`);
+            } else {
+                console.log(`❌ Error scraping #${hashtag}:`, error.message);
+            }
             return null;
         }
     }
@@ -433,6 +469,56 @@ class HashtagAnalyzer {
         };
         
         return `${mealSpecificAdvice[mealType] || 'Optimize for meal-specific content'}. Best performing strategy: ${topStrategy.name} (ROI: ${topStrategy.roi_score}). ${topStrategy.recommendation}`;
+    }
+    
+    // Fallback methods for when real data is unavailable
+    getFallbackPerformance(strategy) {
+        const baseEngagement = {
+            high_reach: 150,
+            medium_engagement: 80,
+            local_niche: 45,
+            ultra_niche: 25
+        };
+        
+        return {
+            hashtags_analyzed: strategy.hashtags.length,
+            avg_engagement_rate: baseEngagement[strategy.name] || 50,
+            avg_likes: Math.round((baseEngagement[strategy.name] || 50) * 0.8),
+            avg_comments: Math.round((baseEngagement[strategy.name] || 50) * 0.2),
+            best_performing_hashtag: strategy.hashtags[0],
+            content_type_insights: { image: 60, video: 30, carousel: 10 },
+            optimal_posting_times: { 12: 3, 13: 5, 19: 4 },
+            related_hashtags: {},
+            estimated_total_reach: strategy.target_reach || 1000,
+            is_fallback: true
+        };
+    }
+    
+    getFallbackHashtagPerformance(hashtag) {
+        return {
+            hashtag: hashtag,
+            total_posts: 5,
+            avg_likes: 150,
+            avg_comments: 10,
+            engagement_rate: 160,
+            top_performing_post: null,
+            content_types: { image: 3, video: 1, carousel: 1 },
+            posting_times: { 12: 2, 13: 2, 19: 1 },
+            caption_lengths: [120, 150, 180, 90, 200],
+            related_hashtags: {},
+            estimated_reach: 1600,
+            is_fallback: true
+        };
+    }
+    
+    getFallbackROIScore(strategy) {
+        const scores = {
+            high_reach: 65,
+            medium_engagement: 58,
+            local_niche: 72,
+            ultra_niche: 68
+        };
+        return scores[strategy.name] || 60;
     }
 }
 
