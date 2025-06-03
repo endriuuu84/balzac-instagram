@@ -15,6 +15,7 @@ app.use(express.static('dashboard-control'));
 const analyzeHandler = require('./api/analyze-wrapper.js');
 const analyzeRealHandler = require('./api/analyze-real-wrapper.js');
 const { HashtagAnalyzer } = require('./api/advanced-analytics.js');
+const { PromptIntegrationSystem } = require('./prompts/prompt-integration.js');
 
 // API Routes
 app.post('/api/analyze', async (req, res) => {
@@ -68,6 +69,71 @@ app.post('/api/advanced-analytics', async (req, res) => {
         console.error('❌ Advanced analytics error:', error);
         res.status(500).json({
             error: 'Advanced analytics failed',
+            message: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Advanced Content Generation Endpoint with ROI-optimized prompts
+app.post('/api/generate-content', async (req, res) => {
+    try {
+        const { meal_type, content_type = 'caption' } = req.body;
+        
+        if (!meal_type || !['colazione', 'pranzo', 'aperitivo'].includes(meal_type)) {
+            return res.status(400).json({
+                error: 'Invalid meal_type',
+                valid_types: ['colazione', 'pranzo', 'aperitivo']
+            });
+        }
+        
+        console.log(`🎯 Generating optimized content for ${meal_type}...`);
+        
+        const promptSystem = new PromptIntegrationSystem();
+        const result = await promptSystem.generateOptimizedContent(meal_type);
+        
+        res.json({
+            meal_type,
+            content_type,
+            timestamp: new Date().toISOString(),
+            generated_content: result,
+            optimization_data: {
+                hashtag_strategy: result.analytics_data?.hashtag_strategy,
+                roi_score: result.analytics_data?.roi_score,
+                optimal_posting_time: result.analytics_data?.optimal_time,
+                engagement_prediction: result.analytics_data?.engagement_prediction
+            }
+        });
+        
+    } catch (error) {
+        console.error('❌ Content generation error:', error);
+        res.status(500).json({
+            error: 'Content generation failed',
+            message: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
+});
+
+// Batch Content Generation for all meal types
+app.post('/api/generate-all-content', async (req, res) => {
+    try {
+        console.log('🚀 Generating content for all meal types...');
+        
+        const promptSystem = new PromptIntegrationSystem();
+        const results = await promptSystem.generateAllMealTypes();
+        
+        res.json({
+            timestamp: new Date().toISOString(),
+            batch_generation: true,
+            results,
+            summary: results.summary
+        });
+        
+    } catch (error) {
+        console.error('❌ Batch content generation error:', error);
+        res.status(500).json({
+            error: 'Batch content generation failed',
             message: error.message,
             timestamp: new Date().toISOString()
         });
@@ -197,6 +263,9 @@ app.listen(PORT, () => {
     console.log(`   - POST /api/analyze`);
     console.log(`   - POST /api/analyze-real`);
     console.log(`   - POST /api/advanced-analytics`);
+    console.log(`   - POST /api/generate-content`);
+    console.log(`   - POST /api/generate-all-content`);
     console.log(`🌐 Dashboard: http://localhost:${PORT}/config`);
     console.log(`🔬 Advanced Analytics: Hashtag ROI, Competitor Analysis, Content Optimization`);
+    console.log(`🎯 AI Content Generation: ROI-optimized OpenAI prompts with real-time analytics`);
 });
