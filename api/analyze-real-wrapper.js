@@ -78,8 +78,9 @@ async function handler(req, res) {
 // Apify Integration - Real hashtag data
 async function getApifyHashtagData(mealType) {
     try {
-        const searchHashtags = getSearchHashtags(mealType);
-        const mainHashtag = searchHashtags[0]; // Use hashtag as-is
+        // Use broader Italian food hashtags to get more relevant data
+        const searchHashtags = ['italianfood', 'foodie', 'restaurant'];
+        const mainHashtag = searchHashtags[Math.floor(Math.random() * searchHashtags.length)];
         
         console.log(`🔍 Scraping hashtag: ${mainHashtag}`);
         
@@ -88,7 +89,7 @@ async function getApifyHashtagData(mealType) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 directUrls: [`https://www.instagram.com/explore/tags/${mainHashtag}/`],
-                resultsLimit: 5,
+                resultsLimit: 8,
                 resultsType: 'posts',
                 addParentData: false,
                 scrapeComments: false,
@@ -103,21 +104,25 @@ async function getApifyHashtagData(mealType) {
         }
         
         const results = await runResponse.json();
-        console.log(`✅ Apify returned ${results.length} posts`);
+        console.log(`✅ Apify returned ${results.length} posts for ${mainHashtag}`);
         
         if (results && results.length > 0) {
             const processedData = processApifyData(results, mealType);
             return {
                 ...processedData,
-                source: 'apify_live'
+                source: 'apify_live',
+                search_term: mainHashtag
             };
         }
         
         throw new Error('No data from Apify');
         
     } catch (error) {
-        console.log('Apify fallback to default data:', error.message);
-        return { optimized_hashtags: getDefaultHashtags(mealType) };
+        console.log('Apify fallback to local optimized hashtags:', error.message);
+        return { 
+            optimized_hashtags: generateLocalOptimizedHashtags(mealType),
+            source: 'local_optimized'
+        };
     }
 }
 
@@ -440,6 +445,35 @@ function getDefaultHashtagsForMealType(mealType) {
         aperitivo: ['#spritz', '#cocktails', '#happyhour', '#aperol', '#drinks', '#afterwork', '#cheers']
     };
     return mealSpecific[mealType] || mealSpecific.aperitivo;
+}
+
+function generateLocalOptimizedHashtags(mealType) {
+    // Always start with local Modena hashtags
+    const local = getLocalHashtags(mealType);
+    const mealSpecific = getDefaultHashtagsForMealType(mealType);
+    const seasonal = getCurrentSeasonalHashtags();
+    const dayType = getDayType() === 'weekend' ? ['#weekend', '#weekendvibes'] : ['#workday', '#pranzolavoro'];
+    
+    const allHashtags = [
+        ...local,
+        ...mealSpecific,
+        ...seasonal,
+        ...dayType,
+        '#foodie', '#instafood', '#italianstyle', '#wheretoeat'
+    ];
+    
+    return allHashtags.slice(0, 18).join(' '); // Limit to 18 hashtags
+}
+
+function getCurrentSeasonalHashtags() {
+    const season = getCurrentSeason();
+    const seasonalTags = {
+        estate: ['#summer', '#estate2025', '#summervibes', '#terrazza'],
+        autunno: ['#autumn', '#autunno2025', '#comfortfood', '#cozy'],
+        inverno: ['#winter', '#inverno2025', '#warmfood', '#comfort'],
+        primavera: ['#spring', '#primavera2025', '#fresh', '#seasonal']
+    };
+    return seasonalTags[season] || seasonalTags.estate;
 }
 
 function getTrendingHashtags() {
