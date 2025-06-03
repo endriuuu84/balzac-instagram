@@ -4,6 +4,9 @@ const path = require('path');
 // Load menu data
 const menuData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'menu.json'), 'utf8'));
 
+// Load advanced analytics
+const { HashtagAnalyzer } = require('./advanced-analytics.js');
+
 // API Keys from environment
 const APIFY_TOKEN = process.env.APIFY_API_TOKEN;
 let INSTAGRAM_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN;
@@ -36,11 +39,15 @@ async function handler(req, res) {
         // Ensure Instagram token is valid before fetching data
         await ensureValidInstagramToken();
         
+        // Initialize advanced analytics
+        const hashtagAnalyzer = new HashtagAnalyzer();
+        
         // Fetch real data in parallel
-        const [hashtagData, instagramInsights, competitorData] = await Promise.all([
+        const [hashtagData, instagramInsights, competitorData, advancedHashtagAnalysis] = await Promise.all([
             getApifyHashtagData(meal_type),
             getInstagramInsights(),
-            getCompetitorAnalysis(meal_type)
+            getCompetitorAnalysis(meal_type),
+            hashtagAnalyzer.analyzeHashtagROI(meal_type, 7) // 7-day analysis
         ]);
 
         // Generate optimized response
@@ -69,6 +76,15 @@ async function handler(req, res) {
                 apify: !!hashtagData.source,
                 instagram_insights: !!instagramInsights.data,
                 live_analysis: true
+            },
+            advanced_analytics: {
+                hashtag_roi_analysis: advancedHashtagAnalysis,
+                optimization_insights: {
+                    recommended_mix: advancedHashtagAnalysis?.recommended_strategy || null,
+                    best_strategy: advancedHashtagAnalysis?.performance_summary?.best_performing_strategy || 'unknown',
+                    roi_score: advancedHashtagAnalysis?.performance_summary?.best_roi_score || 0,
+                    recommendation: advancedHashtagAnalysis?.performance_summary?.overall_recommendation || 'Analysis in progress'
+                }
             }
         };
 

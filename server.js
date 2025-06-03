@@ -14,6 +14,7 @@ app.use(express.static('dashboard-control'));
 // Import API handlers - we'll create wrapper functions
 const analyzeHandler = require('./api/analyze-wrapper.js');
 const analyzeRealHandler = require('./api/analyze-real-wrapper.js');
+const { HashtagAnalyzer } = require('./api/advanced-analytics.js');
 
 // API Routes
 app.post('/api/analyze', async (req, res) => {
@@ -22,6 +23,55 @@ app.post('/api/analyze', async (req, res) => {
 
 app.post('/api/analyze-real', async (req, res) => {
     await analyzeRealHandler(req, res);
+});
+
+// Advanced Analytics Endpoint
+app.post('/api/advanced-analytics', async (req, res) => {
+    try {
+        const { meal_type, analysis_type = 'hashtag_roi', timeframe = 7 } = req.body;
+        
+        console.log(`🔬 Advanced analytics for ${meal_type}: ${analysis_type}`);
+        
+        const hashtagAnalyzer = new HashtagAnalyzer();
+        
+        let analysisResult = {};
+        
+        switch (analysis_type) {
+            case 'hashtag_roi':
+                analysisResult = await hashtagAnalyzer.analyzeHashtagROI(meal_type, timeframe);
+                break;
+            case 'full_analysis':
+                // Run comprehensive analysis (we'll add more types here)
+                analysisResult = {
+                    hashtag_roi: await hashtagAnalyzer.analyzeHashtagROI(meal_type, timeframe),
+                    // competitor_analysis: await competitorAnalyzer.analyze(meal_type),
+                    // content_optimization: await contentAnalyzer.analyze(meal_type),
+                    timestamp: new Date().toISOString()
+                };
+                break;
+            default:
+                return res.status(400).json({ 
+                    error: 'Invalid analysis type',
+                    available_types: ['hashtag_roi', 'full_analysis']
+                });
+        }
+        
+        res.json({
+            meal_type,
+            analysis_type,
+            timeframe,
+            timestamp: new Date().toISOString(),
+            results: analysisResult
+        });
+        
+    } catch (error) {
+        console.error('❌ Advanced analytics error:', error);
+        res.status(500).json({
+            error: 'Advanced analytics failed',
+            message: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // Serve dashboard
@@ -146,5 +196,7 @@ app.listen(PORT, () => {
     console.log(`📊 API endpoints:`);
     console.log(`   - POST /api/analyze`);
     console.log(`   - POST /api/analyze-real`);
+    console.log(`   - POST /api/advanced-analytics`);
     console.log(`🌐 Dashboard: http://localhost:${PORT}/config`);
+    console.log(`🔬 Advanced Analytics: Hashtag ROI, Competitor Analysis, Content Optimization`);
 });
